@@ -3,6 +3,8 @@ package com.shepherd.E_commerce.models;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -32,8 +34,10 @@ public class User {
 	private String password;
 	@Column(unique = true)
 	private String email;
-	@CreatedDate
+	@CreationTimestamp
+	@Column(name="created_at", nullable = false, updatable = false)
 	private Timestamp created_at;
-	@LastModifiedDate
+	@UpdateTimestamp
+	@Column(name="update_at")
 	private Timestamp update_at;
 }
