@@ -6,7 +6,7 @@ public class EmailAlreadyExistsException extends UserException{
 	
 	
 	//?????????
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
 
 	public EmailAlreadyExistsException(String message) {
 		super(message);

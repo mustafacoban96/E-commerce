@@ -2,13 +2,10 @@ package com.shepherd.E_commerce.dto.response;
 
 import java.util.UUID;
 
-public record UserListResponse(
-		
+public record UserUpdateResponse(
 		UUID id,
-		String username,
-		String email
-		
-		
+		String email,
+		String username
 		
 		
 		) {

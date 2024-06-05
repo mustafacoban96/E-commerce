@@ -8,4 +8,5 @@ import com.shepherd.E_commerce.models.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
 	Boolean existsByEmail(String email);
+	
 }
