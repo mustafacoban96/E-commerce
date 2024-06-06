@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateUserRequest;
+import com.shepherd.E_commerce.dto.response.GetUserByIdResponse;
 import com.shepherd.E_commerce.dto.response.UserListResponse;
 import com.shepherd.E_commerce.dto.response.UserUpdateResponse;
 import com.shepherd.E_commerce.models.User;
@@ -15,5 +16,6 @@ public interface UserService {
 	public List<UserListResponse> getAllUsers();
 	public void deleteUserById(UUID user_id);
 	public UserUpdateResponse updateUserById(UUID user_id,UpdateUserRequest updateUserRequest);
+	public GetUserByIdResponse getUserById(UUID id);
 
 }

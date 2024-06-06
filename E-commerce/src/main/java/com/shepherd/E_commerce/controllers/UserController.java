@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateUserRequest;
+import com.shepherd.E_commerce.dto.response.GetUserByIdResponse;
 import com.shepherd.E_commerce.dto.response.UserListResponse;
 import com.shepherd.E_commerce.dto.response.UserUpdateResponse;
 import com.shepherd.E_commerce.service.UserService;
@@ -26,7 +27,7 @@ import jakarta.validation.Valid;
  * */
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 	
 	private final UserService userService;
@@ -42,6 +43,14 @@ public class UserController {
 	public ResponseEntity<String> createUser(@Valid @RequestBody CreateUserRequest request){
 		userService.createUser(request); 
 		return new ResponseEntity<>("User is created successfully", HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/user/{user_id}")
+	public ResponseEntity<GetUserByIdResponse> getUserById(@PathVariable("user_id") UUID id){
+		
+		GetUserByIdResponse response = userService.getUserById(id);
+		
+		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
 	@GetMapping("/get-users")

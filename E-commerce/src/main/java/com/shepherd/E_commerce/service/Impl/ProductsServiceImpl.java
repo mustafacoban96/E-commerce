@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateProductRequest;
+import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
 import com.shepherd.E_commerce.dto.response.ProductListResponse;
 import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
 import com.shepherd.E_commerce.exceptions.ProductNotFoundException;
@@ -79,6 +80,17 @@ public class ProductsServiceImpl implements ProductServcie{
 		productRepository.save(product);
 		
 		ProductUpdateResponse response = productsMapper.ProductEntityToProductUpdateResponse(product);
+		
+		return response;
+	}
+
+	@Override
+	public GetProductByIdResponse getProductById(UUID id) {
+		if(!productRepository.existsById(id)) {
+			throw new ProductNotFoundException("The product is not found");
+		}
+		Products product =  productRepository.getReferenceById(id);
+		GetProductByIdResponse response = productsMapper.ProductEntityToResponseById(product);
 		
 		return response;
 	}

@@ -3,6 +3,7 @@ package com.shepherd.E_commerce.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateProductRequest;
+import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
 import com.shepherd.E_commerce.dto.response.ProductListResponse;
 import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
 import com.shepherd.E_commerce.service.ProductServcie;
@@ -33,11 +34,18 @@ public class ProductController {
 	}
 	
 	
-	
+	//create
 	@PostMapping("/create-product")
 	public ResponseEntity<String> createProduct(@Valid @RequestBody CreateProductRequest request){
 		productServcie.createProduct(request);
 		return new ResponseEntity<>("Prodcut is added successfully",HttpStatus.CREATED);
+	}
+	
+	//getById
+	@GetMapping("/product/{product_id}")
+	public ResponseEntity<GetProductByIdResponse> getProductById(@PathVariable("product_id") UUID id) {
+		GetProductByIdResponse response = productServcie.getProductById(id);
+		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
 	//read

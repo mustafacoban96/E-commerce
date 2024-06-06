@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateProductRequest;
+import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
 import com.shepherd.E_commerce.dto.response.ProductListResponse;
 import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
 import com.shepherd.E_commerce.models.Products;
@@ -15,5 +16,7 @@ public interface ProductServcie {
 	public List<ProductListResponse> getAllProducts();
 	public void deleteProductById(UUID product_id);
 	public ProductUpdateResponse updateProductById(UUID id,UpdateProductRequest request);
+	public GetProductByIdResponse getProductById(UUID id);
+	
 
 }

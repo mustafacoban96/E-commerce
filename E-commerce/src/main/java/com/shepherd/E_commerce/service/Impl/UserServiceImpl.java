@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateUserRequest;
+import com.shepherd.E_commerce.dto.response.GetUserByIdResponse;
 import com.shepherd.E_commerce.dto.response.UserListResponse;
 import com.shepherd.E_commerce.dto.response.UserUpdateResponse;
 import com.shepherd.E_commerce.exceptions.EmailAlreadyExistsException;
@@ -97,6 +98,20 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(user);
 		
 		return userMapper.UserEntityToUpdateResponse(user);
+	}
+
+
+
+	@Override
+	public GetUserByIdResponse getUserById(UUID id) {
+		if(!userRepository.existsById(id)) {
+			throw new UserNotFoundException("The user is not found");
+		}
+		
+		User user = userRepository.getReferenceById(id);
+		
+		GetUserByIdResponse response = userMapper.UserEntityToResponseById(user);
+		return response;
 	}
 	
 	
