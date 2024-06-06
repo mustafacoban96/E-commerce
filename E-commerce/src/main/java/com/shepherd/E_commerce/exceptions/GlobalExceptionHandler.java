@@ -67,6 +67,16 @@ public class GlobalExceptionHandler {
 	}
 	
 	
+	//Product part
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ResponseEntity<ErrorObject> handleProductNotFoundException(ProductNotFoundException ex){
+		errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorObject.setMessage(ex.getMessage());
+		errorObject.setTimestamp(new Date());
+		
+		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.NOT_FOUND);
+	}
+	
 	
 	
 	
