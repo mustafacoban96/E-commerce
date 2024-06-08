@@ -14,10 +14,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 
 
 @Service
+@Slf4j
 public class JwtService {
 	
 	@Value("${jwt.key}")
@@ -29,18 +31,18 @@ public class JwtService {
 	
 	
 	//Generate Token function
-	public String generteToken(String username) {
+	public String generteToken(String email) {
 		
 		Map<String, Object> claims = new HashMap<>();
 		
-		return createToken(claims,username,jwtExpiration);
+		return createToken(claims,email,jwtExpiration);
 	}
 	
-	private String createToken(Map<String, Object> claims,String username,long jwtExpiration) {
+	private String createToken(Map<String, Object> claims,String email,long jwtExpiration) {
 		
 		return Jwts.builder()
 				.setClaims(claims)
-				.setSubject(username)
+				.setSubject(email)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
 				.signWith(getSignKey(),SignatureAlgorithm.HS256)
@@ -49,14 +51,17 @@ public class JwtService {
 	
 	private Key getSignKey() {
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+		log.info("Using secret key: {}", SECRET); 
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
 	
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		String username = extractUsername(token);
+		String email = extractEmail(token);
 		Date expiration = extractExpiration(token);
-		return userDetails.getUsername().equals(username) && expiration.after(new Date());
+		
+		//getEmail!!!!!!!!!!!!!
+		return userDetails.getUsername().equals(email) && expiration.after(new Date());
 	}
 	
 	
@@ -71,13 +76,14 @@ public class JwtService {
 				
 	}
 	
-	public String extractUsername(String token) {
+	public String extractEmail(String token) {
 		Claims claims = Jwts
 				.parserBuilder()
 				.setSigningKey(getSignKey())
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
+		System.out.println("aaaaaaaa---------aaaaaaaaaaaaaaaassssssssssd: " + claims.getSubject());
 		return claims.getSubject();
 	}
 	

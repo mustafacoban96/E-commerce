@@ -15,6 +15,7 @@ import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateUserRequest;
 import com.shepherd.E_commerce.dto.response.GetUserByIdResponse;
 import com.shepherd.E_commerce.dto.response.UserListResponse;
+import com.shepherd.E_commerce.dto.response.UserResponse;
 import com.shepherd.E_commerce.dto.response.UserUpdateResponse;
 import com.shepherd.E_commerce.exceptions.EmailAlreadyExistsException;
 import com.shepherd.E_commerce.exceptions.PasswordMismatchException;
@@ -41,9 +42,10 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByUsername(username);
-		return user.orElseThrow(EntityNotFoundException::new);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+		return user;
 	}
 	
 	
@@ -131,6 +133,23 @@ public class UserServiceImpl implements UserService{
 		
 		GetUserByIdResponse response = userMapper.UserEntityToResponseById(user);
 		return response;
+	}
+
+	@Override
+	public UserResponse getByEmail(String email) {
+		
+		if(!userRepository.existsByEmail(email)) {
+			throw new UserNotFoundException("The user is not found");
+		}
+		User user = userRepository.getReferenceByEmail(email);
+		
+		UserResponse response = userMapper.UserEntityToResponseByEmail(user);
+		return response;
+	}
+	
+	public User getMailll(String email) {
+		User user = userRepository.getReferenceByEmail(email);
+		return user;
 	}
 
 
