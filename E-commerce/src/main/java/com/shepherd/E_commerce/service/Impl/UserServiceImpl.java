@@ -1,9 +1,14 @@
 package com.shepherd.E_commerce.service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
@@ -19,16 +24,20 @@ import com.shepherd.E_commerce.models.User;
 import com.shepherd.E_commerce.repository.UserRepository;
 import com.shepherd.E_commerce.service.UserService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService,UserDetailsService{
 	
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
+	private final BCryptPasswordEncoder passwordEncoder;
 	
-	public UserServiceImpl (UserRepository userRepository,UserMapper userMapper) {
+	public UserServiceImpl (UserRepository userRepository,UserMapper userMapper,BCryptPasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	
@@ -48,7 +57,12 @@ public class UserServiceImpl implements UserService{
 		User user = User.builder()
 				.username(request.username())
 				.email(request.email())
-				.password(request.password())
+				.password(passwordEncoder.encode(request.password()))
+				.authorities(request.authorities())
+				.accountNonExpired(true)
+				.credentialsNonExpired(true)
+				.isEnabled(true)
+				.accountNonLocked(true)
 				.build();
 		return userRepository.save(user);
 		
@@ -112,6 +126,14 @@ public class UserServiceImpl implements UserService{
 		
 		GetUserByIdResponse response = userMapper.UserEntityToResponseById(user);
 		return response;
+	}
+
+
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = userRepository.findByUsername(username);
+		return user.orElseThrow(EntityNotFoundException::new);
 	}
 	
 	
