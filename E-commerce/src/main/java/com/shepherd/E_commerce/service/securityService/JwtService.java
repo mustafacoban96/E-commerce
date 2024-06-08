@@ -54,7 +54,7 @@ public class JwtService {
 	
 	
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		String username = extractEmail(token);
+		String username = extractUsername(token);
 		Date expiration = extractExpiration(token);
 		return userDetails.getUsername().equals(username) && expiration.after(new Date());
 	}
@@ -71,7 +71,7 @@ public class JwtService {
 				
 	}
 	
-	private String extractEmail(String token) {
+	public String extractUsername(String token) {
 		Claims claims = Jwts
 				.parserBuilder()
 				.setSigningKey(getSignKey())

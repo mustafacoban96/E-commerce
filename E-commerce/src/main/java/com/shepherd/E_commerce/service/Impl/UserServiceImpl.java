@@ -28,7 +28,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
-public class UserServiceImpl implements UserService,UserDetailsService{
+public class UserServiceImpl implements UserService{
 	
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
@@ -39,7 +39,12 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
 	}
-
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = userRepository.findByUsername(username);
+		return user.orElseThrow(EntityNotFoundException::new);
+	}
 	
 	
 	//create user
@@ -130,11 +135,10 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByUsername(username);
-		return user.orElseThrow(EntityNotFoundException::new);
-	}
+	
+
+
+	
 	
 	
 
