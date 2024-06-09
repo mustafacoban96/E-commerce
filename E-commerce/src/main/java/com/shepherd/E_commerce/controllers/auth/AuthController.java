@@ -1,5 +1,9 @@
 package com.shepherd.E_commerce.controllers.auth;
 
+import java.security.Principal;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.LoginRequest;
+import com.shepherd.E_commerce.dto.requests.LogoutRequest;
 import com.shepherd.E_commerce.dto.response.AuthenticationResponse;
 import com.shepherd.E_commerce.dto.response.UserResponse;
+import com.shepherd.E_commerce.exceptions.RefreshTokenNotFound;
+import com.shepherd.E_commerce.models.RefreshToken;
+import com.shepherd.E_commerce.service.RefreshTokenService;
 import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtService;
 
@@ -30,13 +38,19 @@ public class AuthController {
 	private final UserService userService;
 	private final JwtService jwtService;
 	private AuthenticationManager authenticationManager;
+	private final RefreshTokenService refreshTokenService;
 	
 	
-	public AuthController(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager) {
+	public AuthController(
+			UserService userService, 
+			JwtService jwtService, 
+			AuthenticationManager authenticationManager,
+			RefreshTokenService refreshTokenService) {
 		
 		this.userService = userService;
 		this.jwtService = jwtService;
 		this.authenticationManager = authenticationManager;
+		this.refreshTokenService = refreshTokenService;
 	}
 	
 	@PostMapping("/register")
@@ -51,14 +65,45 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
 		
+		//refreshTokenService.deleteByUserId(userService.getUserByEmailAsEntity(request.email()).getId());
+		
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 		if(authentication.isAuthenticated()) {
 			String token = jwtService.generteToken(request.email());
 			UserResponse response = userService.getByEmail(request.email());
-			return new ResponseEntity<>(new AuthenticationResponse(token, response),HttpStatus.OK);
+			String refreshToken = refreshTokenService.createRefreshToken(request.email()).getToken();
+			return new ResponseEntity<>(new AuthenticationResponse(token, response,refreshToken),HttpStatus.OK);
 		}
 		log.info("Invalid email "  + request.email());
 		throw new UsernameNotFoundException("Invalid email {}" + request.email());
 		
 	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<String> logout(@RequestBody LogoutRequest request){
+		
+		Optional<RefreshToken> refreshToken =  refreshTokenService.findByToken(request.token());
+		UUID id= refreshToken.get().getUser().getId();
+		refreshTokenService.deleteByUserId(id);
+		
+		return new ResponseEntity<>("Log out successfully",HttpStatus.OK);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

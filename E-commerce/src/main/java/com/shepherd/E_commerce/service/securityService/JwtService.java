@@ -83,7 +83,6 @@ public class JwtService {
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
-		System.out.println("aaaaaaaa---------aaaaaaaaaaaaaaaassssssssssd: " + claims.getSubject());
 		return claims.getSubject();
 	}
 	

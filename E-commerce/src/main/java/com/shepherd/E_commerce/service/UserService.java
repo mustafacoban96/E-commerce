@@ -22,6 +22,7 @@ public interface UserService extends UserDetailsService{
 	public UserUpdateResponse updateUserById(UUID user_id,UpdateUserRequest updateUserRequest);
 	public GetUserByIdResponse getUserById(UUID id);
 	public UserResponse getByEmail(String email);
-	public User getMailll(String email);
+	public User getUserByIdAsEntity(UUID user_id);
+	public User getUserByEmailAsEntity(String email);
 
 }

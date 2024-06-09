@@ -146,11 +146,24 @@ public class UserServiceImpl implements UserService{
 		UserResponse response = userMapper.UserEntityToResponseByEmail(user);
 		return response;
 	}
-	
-	public User getMailll(String email) {
-		User user = userRepository.getReferenceByEmail(email);
+
+	@Override
+	public User getUserByIdAsEntity(UUID user_id) {
+		if(!userRepository.existsById(user_id)) {
+			throw new UsernameNotFoundException("The user is not found!!");
+		}
+		
+		User user = userRepository.getReferenceById(user_id);
 		return user;
 	}
+
+	@Override
+	public User getUserByEmailAsEntity(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.getReferenceByEmail(email);
+	}
+	
+	
 
 
 

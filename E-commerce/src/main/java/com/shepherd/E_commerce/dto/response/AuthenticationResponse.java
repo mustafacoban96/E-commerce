@@ -4,12 +4,13 @@ public record AuthenticationResponse(
 		
 		String access_token,
 		UserResponse userResponse,
+		String refreshToken,
 		String type
 		
 		) {
 	
-	public AuthenticationResponse(String token, UserResponse userInfo) {
-		this(token, userInfo, "Bearer ");
+	public AuthenticationResponse(String token, UserResponse userInfo,String refreshToken) {
+		this(token, userInfo, refreshToken,"Bearer ");
 	}
 
 }
