@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.shepherd.E_commerce.models.Roles;
 import com.shepherd.E_commerce.service.UserService;
+import com.shepherd.E_commerce.service.securityService.JwtTokenBlackListService;
 
 
 
@@ -29,18 +30,20 @@ public class SecurityConfig {
 	private final UserService userService;
 	private PasswordEncoder passwordEncoder;
 	private final JwtAuthEntryPoint jwtAuthEntryPoint;
+	private final JwtTokenBlackListService jwtTokenBlackListService;
 	
 	public SecurityConfig(
 			JwtAuthFilter jwtAuthFilter,
 			UserService userService,
 			PasswordEncoder passwordEncoder,
-			JwtAuthEntryPoint jwtAuthEntryPoint) {
+			JwtAuthEntryPoint jwtAuthEntryPoint,
+			JwtTokenBlackListService jwtTokenBlackListService) {
 		
 		this.jwtAuthFilter = jwtAuthFilter;
 		this.jwtAuthEntryPoint = jwtAuthEntryPoint;
 		this.passwordEncoder = passwordEncoder;
 		this.userService= userService;
-		
+		this.jwtTokenBlackListService = jwtTokenBlackListService;
 	}
 	
 	@Bean
@@ -62,6 +65,7 @@ public class SecurityConfig {
 				.sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtTokenBlackListFilter(jwtTokenBlackListService), JwtAuthFilter.class)
 				.build();
 	}
 	

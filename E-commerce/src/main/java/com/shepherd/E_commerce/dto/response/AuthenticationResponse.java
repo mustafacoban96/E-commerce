@@ -5,7 +5,7 @@ public record AuthenticationResponse(
 		String access_token,
 		UserResponse userResponse,
 		String refreshToken,
-		String type
+		String token_type
 		
 		) {
 	
