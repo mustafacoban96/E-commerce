@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.shepherd.E_commerce.models.User;
 import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtService;
 
@@ -47,12 +48,15 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 			String email= jwtService.extractEmail(token);
 			
 			if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-				UserDetails user = userService.loadUserByUsername(email);
+				User user = (User) userService.loadUserByUsername(email);
 				log.info("token validate " + email);
-				
+				log.info("access_token: " + token);
+				System.out.println(jwtService.validateToken(token, user));
 				
 				if(jwtService.validateToken(token, user)) {
 					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+					System.out.println("principal:" + authToken.getPrincipal());
+					log.info("principal: " + authToken.getPrincipal());
 					authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 					SecurityContextHolder.getContext().setAuthentication(authToken);
 				}

@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.shepherd.E_commerce.models.User;
+
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -56,12 +59,12 @@ public class JwtService {
 	}
 	
 	
-	public Boolean validateToken(String token, UserDetails userDetails) {
+	public Boolean validateToken(String token, User user) {
 		String email = extractEmail(token);
 		Date expiration = extractExpiration(token);
-		
+		log.info("cuurent-email:"  + user.getEmail());
 		//getEmail!!!!!!!!!!!!!
-		return userDetails.getUsername().equals(email) && expiration.after(new Date());
+		return user.getEmail().equals(email) && expiration.after(new Date());
 	}
 	
 	
@@ -86,6 +89,20 @@ public class JwtService {
 		return claims.getSubject();
 	}
 	
+	private boolean isTokenExpired(String token) {
+	    try {
+	        Claims claims = Jwts.parserBuilder()
+	                .setSigningKey(getSignKey())
+	                .setAllowedClockSkewSeconds(60) 
+	                .build()
+	                .parseClaimsJws(token)
+	                .getBody();
+	        return claims.getExpiration().before(new Date());
+	    } catch (ExpiredJwtException e) {
+	        return true;
+	    }
+	}
+
 	
 	
 	

@@ -1,6 +1,6 @@
 package com.shepherd.E_commerce.controllers.auth;
 
-import java.security.Principal;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,6 +24,7 @@ import com.shepherd.E_commerce.dto.requests.TokenRefreshRequest;
 import com.shepherd.E_commerce.dto.response.AuthenticationResponse;
 import com.shepherd.E_commerce.dto.response.TokenRefreshResponse;
 import com.shepherd.E_commerce.dto.response.UserResponse;
+import com.shepherd.E_commerce.exceptions.RefreshTokenExpiredException;
 import com.shepherd.E_commerce.exceptions.RefreshTokenNotFound;
 import com.shepherd.E_commerce.models.RefreshToken;
 import com.shepherd.E_commerce.service.RefreshTokenService;
@@ -37,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000/")
 public class AuthController {
 
 	private final UserService userService;
@@ -73,8 +75,11 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
 		
-		//refreshTokenService.deleteByUserId(userService.getUserByEmailAsEntity(request.email()).getId());
 		
+		UUID user_id = userService.getByEmail(request.email()).user_id();
+		if(refreshTokenService.existsByUserId(user_id)) {
+			refreshTokenService.deleteByUserId(user_id);
+		}
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 		if(authentication.isAuthenticated()) {
 			String token = jwtService.generteToken(request.email());
@@ -100,19 +105,33 @@ public class AuthController {
 		
 	}
 	
-	// 
+	
 	@PostMapping("/refreshtoken")
 	public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request){
 		
 		String requestRefreshToken = request.refresh_token();
+		Optional<RefreshToken> refreshTokenOptional = refreshTokenService.findByToken(requestRefreshToken);
+		RefreshToken refreshToken  = refreshTokenOptional.get();
 		
-		return refreshTokenService.findByToken(requestRefreshToken)
+		try {
+			refreshTokenService.verifyExpiration(refreshToken);
+			String email = refreshToken.getUser().getEmail();
+		    String token = jwtService.generteToken(email);
+		    return new ResponseEntity<>(new TokenRefreshResponse(token, requestRefreshToken), HttpStatus.OK);
+		} catch (RefreshTokenExpiredException e) {
+			refreshTokenService.deleteByToken(requestRefreshToken);
+			throw e;
+		}
+		 
+		
+		 
+		/*return refreshTokenService.findByToken(requestRefreshToken)
 				.map(refreshTokenService::verifyExpiration)
 				.map(RefreshToken::getUser)
 				.map(user ->{
 					String token = jwtService.generteToken(user.getEmail());
 					return new ResponseEntity<>(new TokenRefreshResponse(token, requestRefreshToken),HttpStatus.OK);
-				}).orElseThrow(() -> new RefreshTokenNotFound("Invalid token"));
+				}).orElseThrow(() -> new RefreshTokenNotFound("Invalid token"));*/
 		
 		
 	}

@@ -24,5 +24,6 @@ public interface UserService extends UserDetailsService{
 	public UserResponse getByEmail(String email);
 	public User getUserByIdAsEntity(UUID user_id);
 	public User getUserByEmailAsEntity(String email);
+	
 
 }

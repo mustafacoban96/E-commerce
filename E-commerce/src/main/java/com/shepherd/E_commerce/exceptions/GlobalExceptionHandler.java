@@ -87,7 +87,14 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.FORBIDDEN);
 	}
 	
-	
+	@ExceptionHandler(RefreshTokenExpiredException.class)
+	public ResponseEntity<ErrorObject> handleRefreshTokenExpiredException(RefreshTokenExpiredException ex){
+		errorObject.setStatusCode(HttpStatus.FORBIDDEN.value());
+		errorObject.setMessage(ex.getMessage());
+		errorObject.setTimestamp(new Date());
+		
+		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.FORBIDDEN);
+	}
 	
 	
 	

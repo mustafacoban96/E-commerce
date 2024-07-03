@@ -13,6 +13,7 @@ public interface RefreshTokenService {
 	public RefreshToken verifyExpiration(RefreshToken token);
 	public int deleteByUserId(UUID user_id);
 	public Boolean existsByUserId(UUID user_id);
+	public void deleteByToken(String token);
 	
 
 }

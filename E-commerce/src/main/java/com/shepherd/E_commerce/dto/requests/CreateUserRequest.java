@@ -17,7 +17,7 @@ public record CreateUserRequest(
 		@NotBlank(message = "username cannot be empty and cannot contain space")
 		@Pattern(regexp = "^[a-zA-Z0-9.\\-\\/+=@_]*$",message = "Invalid username")
 		String username,
-		@Email
+		@Email(message = "Invalid e-mail")
 		String email,
 		@NotBlank(message = "password cannot be empty and cannot contain space")
 		String password,
