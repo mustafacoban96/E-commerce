@@ -3,9 +3,11 @@ import {  createContext,useContext,useState} from "react";
 
 const AuthContext = createContext({
     user:null,
-    token:null,
+    access_token:null,
+    refresh_token:null,
     setUser: () =>{},
-    setToken: () =>{}
+    setToken: () =>{},
+    setRefreshToken :() =>{}
 })
 
 
@@ -16,18 +18,20 @@ export const AuthProvider = ({children}) =>{
         return user ? JSON.parse(user) : null
     });
 
-    const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
+    const [access_token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
+    const [refresh_token,_setRefreshToken] = useState(localStorage.getItem('REFRESH_TOKEN'));
 
-    const setToken = (token) =>{
-        _setToken(token);
+    const setToken = (access_token) =>{
+        _setToken(access_token);
 
-        if(token){
-            localStorage.setItem('ACCESS_TOKEN',token);
+        if(access_token){
+            localStorage.setItem('ACCESS_TOKEN',access_token);
         }
         else{
             localStorage.removeItem('ACCESS_TOKEN')
         }
     }
+
 
     const setUser = (user) => {
         _setUser(user)
@@ -39,13 +43,25 @@ export const AuthProvider = ({children}) =>{
         }
     }
 
+    const setRefreshToken = (refresh_token) =>{
+        _setRefreshToken(refresh_token)
+
+        if(refresh_token){
+            localStorage.setItem('REFRESH_TOKEN',refresh_token)
+        }else{
+            localStorage.removeItem('REFRESH_TOKEN')
+        }
+    }
+
     return(
         <AuthContext.Provider
             value={{
                 user,
-                token,
+                access_token,
+                refresh_token,
                 setUser,
-                setToken
+                setToken,
+                setRefreshToken
             }}
         >
             {children}

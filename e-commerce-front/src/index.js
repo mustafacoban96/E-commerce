@@ -18,7 +18,6 @@ root.render(
       <CssBaseline/>
       <RouterProvider router={router}/>
     </ThemeProvider>
-    
   </AuthProvider>
 );
 

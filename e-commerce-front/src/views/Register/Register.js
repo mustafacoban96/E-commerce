@@ -1,10 +1,10 @@
 import { Box, Button, Stack, TextField, Typography, styled } from '@mui/material'
 import React, {useRef} from 'react'
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
 import { useTheme } from '@emotion/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
+import useAuthService from '../../service/auth-service';
+import { Link } from 'react-router-dom';
 
 const RegisterTextField = styled(TextField)(({ theme }) => ({
     '& .MuiOutlinedInput-root': {
@@ -28,8 +28,7 @@ const RegisterTextField = styled(TextField)(({ theme }) => ({
 
 const Register = () => {
    
-  //navigate login after register
-  const navigate = useNavigate()
+  const { register } = useAuthService();
 
   const usernameRef = useRef();
   const emailRef = useRef();
@@ -47,41 +46,9 @@ const Register = () => {
       authorities:["ROLE_USER"]
     }
 
-    axios
-    .post(`${process.env.REACT_APP_AUTH_BASE_URL}/register`, payload)
-    .then((response) => {
-        //console.log(response)
-        let message = response.data;
-        toast.success(message+" You are directed to login page...", {
-            autoClose: 2000,
-            position:'top-right',
-            });
-      setTimeout(() =>{
-        navigate('/login')
-      },3000)
-    })
-    .catch((err) =>{
-        let res = err.response.data
-        let message = res.message
-        // console.log('bb:',response)
-        // error i handled via except class in spring boot.
-        if(message){
-            toast.error(message, {
-                autoClose: 3000,
-                position:'top-right',
-                
-                });
-        }
-        else{
-            toast.error(res.errors[0], {
-                autoClose: 3000,
-                position:'top-right',
-                
-                });
-        }
-       
+    register(payload);
+
     
-    });
 
   }
 
@@ -123,14 +90,17 @@ const Register = () => {
                 label="Confirm Password"
             />
         </Stack>
+        <Stack direction='column' sx={{alignItems:'center'}}>
         <Button type="submit" variant="contained"  sx={{
           width: '40%',
-          marginTop: '8%',
+          marginTop: '3%',
           backgroundColor: theme.palette.commerceOrange.main,
           '&:hover': {
             backgroundColor: theme.palette.commerceOrange.dark,
           }
         }}>Sing Up</Button>
+        <Link to='/login'>You have been already member</Link>
+        </Stack>
       </Box>
        <ToastContainer />
        </>

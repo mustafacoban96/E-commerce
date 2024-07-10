@@ -6,6 +6,7 @@ import Home from "./views/Home/Home";
 import Login from "./views/Login/Login";
 import NotFound from './views/NotFound/NotFound'
 import Register from "./views/Register/Register";
+import Products from './views/Product/Products'
 
 
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path:'home',
                 element:<Home/>
+            },
+            {
+                path:'/products',
+                element:<Products/>
             }
         ]
     },
