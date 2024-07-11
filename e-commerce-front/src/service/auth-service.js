@@ -46,9 +46,16 @@ const useAuthService = () => {
                 let user = data.user_response;
                 let token = data.access_token;
                 let refreshToken = data.refresh_token;
-                setUser(user);
-                setRefreshToken(refreshToken);
-                setToken(token);
+                
+                toast.success('Login is successful',{
+                        autoClose: 2000,
+                        position: 'top-right',
+                })
+                setTimeout(() =>{
+                    setUser(user);
+                    setRefreshToken(refreshToken);
+                    setToken(token);
+                },2200)
             })
             .catch((err) => {
                 console.log('myerrr:',err);
@@ -71,7 +78,7 @@ const useAuthService = () => {
     const logout = (logout_payload) => {
         return api.post('/auth/logout', logout_payload)
             .then((response) => {
-                console.log('asdasd:',response);
+               
                 let message = response.data;
                 toast.success(message + " You are directed to login page...", {
                     autoClose: 2000,

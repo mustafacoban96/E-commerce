@@ -1,5 +1,5 @@
 import { Box, Button, Stack, TextField, Typography, styled } from '@mui/material'
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { useTheme } from '@emotion/react';
 import { ToastContainer} from 'react-toastify';
@@ -12,22 +12,26 @@ const RegisterTextField = styled(TextField)(({ theme }) => ({
         borderColor: 'gray', // Default border color
       },
       '&:hover fieldset': {
-        borderColor: theme.palette.commerceOrange.main, // Hover border color
+        borderColor: theme.palette.mode === 'light' ? theme.palette.myBlack.light : theme.palette.myBlack.dark, // Hover border color
       },
       '&.Mui-focused fieldset': {
-        borderColor: theme.palette.commerceOrange.main, // Focused border color
+        borderColor: theme.palette.mode === 'light' ? theme.palette.myBlack.light : theme.palette.myBlack.dark, // Focused border color
       },
     },
     '& .MuiInputLabel-root': {
       color: 'gray', // Default label color
     },
     '& .MuiInputLabel-root.Mui-focused': {
-      color: theme.palette.commerceOrange.main, // Focused label color
+      color: theme.palette.mode === 'light' ? theme.palette.myBlack.light : theme.palette.myBlack.dark, // Focused label color
     },
   }));
 
 const Register = () => {
-   
+  const myTheme = useTheme()
+  const [mode] = useState(myTheme.palette.mode);
+  const theColor= (mode) =>{
+    return (mode === 'light' ? theme.palette.myBlack.light : theme.palette.myBlack.dark)
+  }
   const { register } = useAuthService();
 
   const usernameRef = useRef();
@@ -62,15 +66,15 @@ const Register = () => {
         marginY:{xs:'8%',md:'6%'},
         borderRadius:'3px',
         padding:'12px',
-        border:`2px solid ${theme.palette.commerceOrange.main}`,
+        border:`0.3px solid ${theColor(mode)}`,
         textAlign:'center',
         
         }}
         component='form'
         onSubmit={submitHandler}
         >
-        <LockOpenIcon color='commerceOrange' fontSize='large' />
-        <Typography variant="h5" gutterBottom sx={{fontWeight:'bold'}}>Register</Typography>
+        <LockOpenIcon sx={{color:`${theColor(mode)}`}} fontSize='large' />
+        <Typography variant="h5" gutterBottom sx={{fontWeight:'bold',color:`${theColor(mode)}`}}>Register</Typography>
        
         <Stack spacing={3} p={2}>
             <RegisterTextField
@@ -94,12 +98,16 @@ const Register = () => {
         <Button type="submit" variant="contained"  sx={{
           width: '40%',
           marginTop: '3%',
-          backgroundColor: theme.palette.commerceOrange.main,
+          backgroundColor: theColor(mode),
           '&:hover': {
             backgroundColor: theme.palette.commerceOrange.dark,
           }
         }}>Sing Up</Button>
-        <Link to='/login'>You have been already member</Link>
+        <Link to='/login'
+          style={{color:theme.palette.saleColor.main}}
+        >
+          You have been already member
+        </Link>
         </Stack>
       </Box>
        <ToastContainer />
