@@ -34,12 +34,23 @@ public class ProductController {
 	}
 	
 	
+	
+	//read
+		@GetMapping("/")
+		public ResponseEntity<List<ProductListResponse>> getAllProductsAsList(){
+			
+			List<ProductListResponse> listAllProducts = productServcie.getAllProducts();
+			
+			return new ResponseEntity<>(listAllProducts,HttpStatus.OK);
+			
+		}
+	
 	//create
 	@PostMapping("/create-product")
 	public ResponseEntity<String> createProduct(@Valid @RequestBody CreateProductRequest request){
 		System.out.println(request);
 		productServcie.createProduct(request);
-		return new ResponseEntity<>("Prodcut is added successfully",HttpStatus.CREATED);
+		return new ResponseEntity<>("Product is added successfully",HttpStatus.CREATED);
 	}
 	
 	//getById
@@ -49,15 +60,7 @@ public class ProductController {
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
-	//read
-	@GetMapping("/product-list")
-	public ResponseEntity<List<ProductListResponse>> getAllProductsAsList(){
-		
-		List<ProductListResponse> listAllProducts = productServcie.getAllProducts();
-		
-		return new ResponseEntity<>(listAllProducts,HttpStatus.OK);
-		
-	}
+	
 	//delete
 	@DeleteMapping("/delete-product/{product_id}")
 	public ResponseEntity<String> deleteProductById(@PathVariable("product_id") UUID id){

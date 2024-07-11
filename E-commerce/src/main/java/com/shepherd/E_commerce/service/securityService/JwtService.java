@@ -34,7 +34,7 @@ public class JwtService {
 	
 	
 	//Generate Token function
-	public String generteToken(String email) {
+	public String generateToken(String email) {
 		
 		Map<String, Object> claims = new HashMap<>();
 		
@@ -62,7 +62,7 @@ public class JwtService {
 	public Boolean validateToken(String token, User user) {
 		String email = extractEmail(token);
 		Date expiration = extractExpiration(token);
-		log.info("cuurent-email:"  + user.getEmail());
+		log.info("current-email:"  + user.getEmail());
 		//getEmail!!!!!!!!!!!!!
 		return user.getEmail().equals(email) && expiration.after(new Date());
 	}
@@ -89,7 +89,7 @@ public class JwtService {
 		return claims.getSubject();
 	}
 	
-	private boolean isTokenExpired(String token) {
+	public boolean isTokenExpired(String token) {
 	    try {
 	        Claims claims = Jwts.parserBuilder()
 	                .setSigningKey(getSignKey())

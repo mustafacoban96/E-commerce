@@ -1,0 +1,12 @@
+200: OK, İşlem sorunsuz ve başarılı.GET /users/{id}
+201: Created, Yeni resource başarıyla oluşturuldu. |POST /users
+204: No Content, Resource boş/Resource silindi |DELETE /users/{id}
+400: Bad Request, Geçersiz request/Eksik ya da geçersiz query/parametre
+401: Unauthorized, Yetki/Authentication gerekiyor.
+403: Forbidden, Sunucuisteği reddetti ve isteğe yetkiniz yok
+404: Not found, İstekte bulunulan tekil resource mevcut değil
+405: Method Not Allowed: HTTP metodu yanlış
+409: Conflict: Uyumsuz istek, eski versiyondaki istek ya da Zaten varolan resource’u yeniden oluşturmaya çalışırken verilebilir.(Already exist)
+429: Too many requests, Çok fazla istekte bulunuldu.
+415: Unsupported Media Type: Desteklenmeyen ya da yanlış Content-Type
+5xx ise sunucu hatalarından oluşan HTTP response kodlarını içerir.

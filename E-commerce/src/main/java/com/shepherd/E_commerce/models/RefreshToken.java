@@ -2,6 +2,8 @@ package com.shepherd.E_commerce.models;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

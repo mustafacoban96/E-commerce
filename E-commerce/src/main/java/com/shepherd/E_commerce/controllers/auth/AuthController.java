@@ -4,6 +4,7 @@ package com.shepherd.E_commerce.controllers.auth;
 import java.util.Optional;
 import java.util.UUID;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,7 @@ import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtService;
 import com.shepherd.E_commerce.service.securityService.JwtTokenBlackListService;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,7 +84,7 @@ public class AuthController {
 		}
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 		if(authentication.isAuthenticated()) {
-			String token = jwtService.generteToken(request.email());
+			String token = jwtService.generateToken(request.email());
 			UserResponse response = userService.getByEmail(request.email());
 			String refreshToken = refreshTokenService.createRefreshToken(request.email()).getToken();
 			return new ResponseEntity<>(new AuthenticationResponse(token, response,refreshToken),HttpStatus.OK);
@@ -95,11 +97,12 @@ public class AuthController {
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader(value = "Authorization",required = false) String bearerToken,@RequestBody LogoutRequest request){
 		
-		Optional<RefreshToken> refreshToken =  refreshTokenService.findByToken(request.token());
-		UUID id= refreshToken.get().getUser().getId();
-		refreshTokenService.deleteByUserId(id);
 		String token = bearerToken.substring(7);
 		jwtTokenBlackListService.blackListToken(token);
+		Optional<RefreshToken> refreshToken =  refreshTokenService.findByToken(request.refresh_token());
+		UUID id= refreshToken.get().getUser().getId();
+		refreshTokenService.deleteByUserId(id);
+		
 		
 		return new ResponseEntity<>("Log out successfully",HttpStatus.OK);
 		
@@ -107,23 +110,23 @@ public class AuthController {
 	
 	
 	@PostMapping("/refreshtoken")
-	public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request){
+	public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request){
 		
 		String requestRefreshToken = request.refresh_token();
 		Optional<RefreshToken> refreshTokenOptional = refreshTokenService.findByToken(requestRefreshToken);
 		RefreshToken refreshToken  = refreshTokenOptional.get();
-		
 		try {
 			refreshTokenService.verifyExpiration(refreshToken);
-			String email = refreshToken.getUser().getEmail();
-		    String token = jwtService.generteToken(email);
-		    return new ResponseEntity<>(new TokenRefreshResponse(token, requestRefreshToken), HttpStatus.OK);
+			System.out.println("ttttt");
 		} catch (RefreshTokenExpiredException e) {
 			refreshTokenService.deleteByToken(requestRefreshToken);
+			System.out.println("aaaaa");
 			throw e;
-		}
-		 
-		
+		}	
+			String email = refreshToken.getUser().getEmail();
+		    String token = jwtService.generateToken(email);
+		    System.out.println("eeeee");
+		    return new ResponseEntity<>(new TokenRefreshResponse(token, requestRefreshToken), HttpStatus.OK);
 		 
 		/*return refreshTokenService.findByToken(requestRefreshToken)
 				.map(refreshTokenService::verifyExpiration)

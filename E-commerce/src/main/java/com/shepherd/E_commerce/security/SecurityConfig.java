@@ -55,12 +55,10 @@ public class SecurityConfig {
 				.authorizeHttpRequests(x ->
 				
 								x
-								.requestMatchers("/auth/**","/auth/register/**","/auth/login/**").permitAll()
+								.requestMatchers("/auth/**","/auth/register/**","/auth/login/**","/auth/refreshtoken/**").permitAll()
 								.requestMatchers("/admin/**").hasRole(Roles.ROLE_ADMIN.getValue())
 								.requestMatchers("/products/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
 								.requestMatchers("/users/**").hasRole(Roles.ROLE_ADMIN.getValue())
-								
-						
 						)
 				.formLogin(AbstractHttpConfigurer::disable)
 				.sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
