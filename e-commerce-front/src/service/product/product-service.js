@@ -3,10 +3,27 @@ import useApi from "../api"
 //import axiosClient from "../auth/test-auth";
 
 
+//https://beyondthecloud.dev/blog/then-vs-async-await-in-lwc
+
 
 
 const useProductService = () =>{
     const api = useApi();
+
+
+    const fetchProducts = () =>{
+        api.get("/products/").then((response) =>{
+            console.log('products::::',response)
+          return response;  
+        }).catch((error) =>{
+            console.log('product-error:::',error)
+            return error;
+        })
+        
+    }
+
+
+
 
     const addProduct = (addProductPayload) =>{
         return api.post("/products/create-product",addProductPayload).then((response) => {
@@ -26,8 +43,10 @@ const useProductService = () =>{
 
 
 
+
     return {
-        addProduct
+        addProduct,
+        fetchProducts
     }
 
 }
