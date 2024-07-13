@@ -1,28 +1,26 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts, getAllProducts} from './productSlice'
-import AddProduct from '../../views/Product/AddProduct'
+import ProdcutPageCard from '../../components/Card/ProdcutPageCard'
 
 const ProductList = () => {
     const dispatch = useDispatch()
     const products = useSelector(getAllProducts);
     useEffect(() =>{
+        console.log('fertch:::product',products)
         dispatch(fetchProducts())
      },[dispatch])
-   
+     
+    
 
     
-   
-    console.log('prodcuts:::::',products)
 
-    const renderedProducts = products.map(p =>(
-        <li key={p.id}>
-            {p.name}
-        </li>
+    const renderedProducts = products.map(product =>(
+        <ProdcutPageCard product={product}/>
     ))
   return (
     <div>
-        <AddProduct/>
+       
        <h3>Products</h3>
        <ul>{renderedProducts}</ul>
     </div>

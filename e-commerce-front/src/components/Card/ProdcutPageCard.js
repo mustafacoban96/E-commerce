@@ -15,10 +15,10 @@ const ProdcutPageCard = (props) => {
 
   return (
    
-      <Box key={props.id} sx={{ margin:'0.75px',color:`${myTextColor(mode)}`}}>
+      <Box key={props.product.id} sx={{ margin:'0.75px',color:`${myTextColor(mode)}`}}>
         <CardMedia
              component="img"
-             image={props.imgSource}
+             image={'https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]'}
              alt="green iguana"
         />
         <CardContent 
@@ -27,10 +27,10 @@ const ProdcutPageCard = (props) => {
         }}
         >
         <Typography gutterBottom variant="p"  sx={{fontSize:'0.88em'}}>
-            {props.description}
+            {props.product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-            {props.price} ₺
+            {props.product.price} ₺
         </Typography>
       </CardContent>
       </Box>
