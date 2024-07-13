@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react'
-import { Box,CardContent, CardMedia,styled,Typography } from '@mui/material'
+import { Box,CardContent, CardMedia,Typography } from '@mui/material'
 import React, { useState } from 'react'
 
 const ProdcutPageCard = (props) => {
