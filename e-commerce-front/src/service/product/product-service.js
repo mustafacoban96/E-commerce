@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
-import useApi from "../api"
+//import useApi from "../api"
+import axiosConfig from "../api/newApi";
 //import axiosClient from "../auth/test-auth";
 
 
@@ -8,11 +9,11 @@ import useApi from "../api"
 
 
 const useProductService = () =>{
-    const api = useApi();
+    //const api = useApi();
 
 
     const fetchProducts = () =>{
-        api.get("/products/").then((response) =>{
+        axiosConfig.get("/products/").then((response) =>{
             console.log('products::::',response)
           return response;  
         }).catch((error) =>{
@@ -26,7 +27,7 @@ const useProductService = () =>{
 
 
     const addProduct = (addProductPayload) =>{
-        return api.post("/products/create-product",addProductPayload).then((response) => {
+        return axiosConfig.post("/products/create-product",addProductPayload).then((response) => {
            console.log('product-response:',response);
            let message = response.data
            toast.success(message , {

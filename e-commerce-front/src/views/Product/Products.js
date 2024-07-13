@@ -9,6 +9,7 @@ import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import { useTheme } from '@emotion/react'
 import { ToastContainer } from 'react-toastify'
 import AddProduct from './AddProduct'
+import ProductList from '../../features/products/ProductList'
 
 const Products = () => {
   console.log('product')
@@ -20,6 +21,7 @@ const Products = () => {
   }
   return (
     <>
+    <ProductList/>
         <Box
     sx={{
     }}

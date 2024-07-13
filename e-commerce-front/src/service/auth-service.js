@@ -1,16 +1,17 @@
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { useAuthContext } from '../context/AuthContext';
-import useApi from './api';
-import axios from 'axios';
+//import useApi from './api';
+//import axios from 'axios';
+import axiosConfig from './api/newApi';
 
 const useAuthService = () => {
     const navigate = useNavigate();
     const { setUser, setToken, setRefreshToken} = useAuthContext();
-    const api = useApi();
+   // const api = useApi();
 
     const register = (register_payload) => {
-        return api.post("/auth/register", register_payload)
+        return axiosConfig.post("/auth/register", register_payload)
             .then((response) => {
                 let message = response.data;
                 toast.success(message + " You are directed to login page...", {
@@ -39,7 +40,7 @@ const useAuthService = () => {
     };
 
     const login = (loginPayload) => {
-        return axios.post("http://localhost:8080/auth/login", loginPayload)
+        return axiosConfig.post("/auth/login", loginPayload)
             .then((response) => {
                 console.log('login-data:', response.data);
                 let data = response.data;
@@ -76,9 +77,9 @@ const useAuthService = () => {
     };
 
     const logout = (logout_payload) => {
-        return api.post('/auth/logout', logout_payload)
+        return axiosConfig.post('/auth/logout', logout_payload)
             .then((response) => {
-               
+                console.log('qwer')
                 let message = response.data;
                 toast.success(message + " You are directed to login page...", {
                     autoClose: 2000,
@@ -87,9 +88,9 @@ const useAuthService = () => {
                 localStorage.removeItem('ACCESS_TOKEN');
                 localStorage.removeItem('REFRESH_TOKEN');
                 localStorage.removeItem('USER');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 2000);
                 
             }).catch((err) => {
                 //window.localStorage.href = '/login';
