@@ -19,10 +19,10 @@ import com.shepherd.E_commerce.exceptions.ProductNotFoundException;
 import com.shepherd.E_commerce.mappers.ProductsMapper;
 import com.shepherd.E_commerce.models.Products;
 import com.shepherd.E_commerce.repository.ProductRepository;
-import com.shepherd.E_commerce.service.ProductServcie;
+import com.shepherd.E_commerce.service.ProductService;
 
 @Service
-public class ProductsServiceImpl implements ProductServcie{
+public class ProductsServiceImpl implements ProductService{
 	
 	private final ProductRepository productRepository;
 	private final ProductsMapper productsMapper;
