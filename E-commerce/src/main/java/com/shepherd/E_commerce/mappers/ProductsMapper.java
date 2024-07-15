@@ -17,7 +17,12 @@ public class ProductsMapper {
 			return null;
 		}
 		
-		return new ProductListResponse(product.getId(),product.getName(), product.getDescription(),product.getStock(),product.getPrice());
+		return new ProductListResponse(
+				product.getId(),
+				product.getName(), 
+				product.getDescription(),
+				product.getStock(),
+				product.getPrice());
 	}
 	
 	//update
