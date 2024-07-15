@@ -25,7 +25,7 @@ import com.shepherd.E_commerce.service.ProductServcie;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products/")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 	
@@ -38,16 +38,16 @@ public class ProductController {
 	
 	
 	//read
-		@GetMapping("/")
+		/*@GetMapping("/")
 		public ResponseEntity<List<ProductListResponse>> getAllProductsAsList(){
 			
 			List<ProductListResponse> listAllProducts = productServcie.getAllProducts();
 			
 			return new ResponseEntity<>(listAllProducts,HttpStatus.OK);
 			
-		}
+		}*/
 		
-		@GetMapping("/e" )
+		@GetMapping("/product-list")
 		public ResponseEntity <ProductListResponseV2> getAllProductsAsListV2(
 				@RequestParam(value="pageNo",defaultValue = "0",required = false) int pageNo,
 				@RequestParam(value="pageSize",defaultValue = "5",required = false) int pageSize
