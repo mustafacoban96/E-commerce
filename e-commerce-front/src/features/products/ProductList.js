@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts, getAllProducts} from './productSlice'
 import ProdcutPageCard from '../../components/Card/ProdcutPageCard'
 import { Link } from 'react-router-dom'
-import { Box, Grid, IconButton, Stack } from '@mui/material'
+import { Box, CircularProgress, Grid, IconButton, Stack } from '@mui/material'
 import ViewArrayOutlinedIcon from '@mui/icons-material/ViewArrayOutlined';
 import ViewColumnOutlinedIcon from '@mui/icons-material/ViewColumnOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
@@ -12,9 +12,11 @@ import { ToastContainer } from 'react-toastify'
 
 const ProductList = () => {
     const dispatch = useDispatch()
-    const products = useSelector(getAllProducts);
+    // const products = useSelector(getAllProducts);
+    const products = useSelector((state) => state.products.products)
+    const isLoading = useSelector((state) => state.products.isLoading)
+    const error = useSelector((state) => state.products.error)
     useEffect(() =>{
-        console.log('fertch:::product',products)
         dispatch(fetchProducts())
      },[dispatch])
      const [filterGrid,setFilterGrid] = useState(3);
@@ -24,6 +26,18 @@ const ProductList = () => {
        return (mode === 'light' ? myTheme.palette.myBlack.light : myTheme.palette.myBlack.dark)
      }
      
+     if (isLoading) {
+      return (
+        
+          <Box sx={{justifyContent:'center'}}>
+          <CircularProgress color="success" />
+        </Box>
+        )
+    }
+  
+    if (error) {
+      return error
+    }
     
   return (
     <>
