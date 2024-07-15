@@ -47,7 +47,7 @@ public class ProductController {
 			
 		}*/
 		
-		@GetMapping("/product-list")
+		@GetMapping("/product-lis")
 		public ResponseEntity <ProductListResponseV2> getAllProductsAsListV2(
 				@RequestParam(value="pageNo",defaultValue = "0",required = false) int pageNo,
 				@RequestParam(value="pageSize",defaultValue = "5",required = false) int pageSize
