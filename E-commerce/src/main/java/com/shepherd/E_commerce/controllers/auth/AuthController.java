@@ -3,8 +3,6 @@ package com.shepherd.E_commerce.controllers.auth;
 
 import java.util.Optional;
 import java.util.UUID;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.shepherd.E_commerce.dto.requests.CreateUserRequest;
 import com.shepherd.E_commerce.dto.requests.LoginRequest;
 import com.shepherd.E_commerce.dto.requests.LogoutRequest;
@@ -26,14 +23,11 @@ import com.shepherd.E_commerce.dto.response.AuthenticationResponse;
 import com.shepherd.E_commerce.dto.response.TokenRefreshResponse;
 import com.shepherd.E_commerce.dto.response.UserResponse;
 import com.shepherd.E_commerce.exceptions.RefreshTokenExpiredException;
-import com.shepherd.E_commerce.exceptions.RefreshTokenNotFound;
 import com.shepherd.E_commerce.models.RefreshToken;
 import com.shepherd.E_commerce.service.RefreshTokenService;
 import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtService;
 import com.shepherd.E_commerce.service.securityService.JwtTokenBlackListService;
-
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
