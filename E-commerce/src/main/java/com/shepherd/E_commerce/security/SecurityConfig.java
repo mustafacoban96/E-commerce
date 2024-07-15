@@ -57,8 +57,8 @@ public class SecurityConfig {
 								x
 								.requestMatchers("/auth/**","/auth/register/**","/auth/login/**","/auth/refreshtoken/**").permitAll()
 								.requestMatchers("/admin/**").hasRole(Roles.ROLE_ADMIN.getValue())
-								.requestMatchers("/products/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
-								.requestMatchers("/users/**").hasRole(Roles.ROLE_ADMIN.getValue())
+								.requestMatchers("/api/v1/products/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
+								.requestMatchers("/api/v1/users/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
 						)
 				.formLogin(AbstractHttpConfigurer::disable)
 				.sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
