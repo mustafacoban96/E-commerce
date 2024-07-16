@@ -74,6 +74,9 @@ public class User implements UserDetails,Serializable{
 	
 	
 	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private RefreshToken refreshToken;
+	
 	
 	
 	

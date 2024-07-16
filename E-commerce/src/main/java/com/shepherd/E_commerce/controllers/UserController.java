@@ -65,10 +65,9 @@ public class UserController {
 	@DeleteMapping("/delete-user/{user_id}")
 	public ResponseEntity<String> deleteUserById(@PathVariable("user_id") UUID id){
 		//ERROR: update or delete on table "users" violates foreign key constraint "fkjtx87i0jvq2svedphegvdwcuy" on table "refresh_token"
-		if(refreshTokenService.existsByUserId(id)) {
-			refreshTokenService.deleteByUserId(id);
-		}
-		////////////////////////////////////////////////////////
+		/*if(refreshTokenService.existsByUserId(id)) {
+			refreshTokenService.deleteByUserId(id); // refresh token deleted
+		}*/
 		userService.deleteUserById(id);
 		return new ResponseEntity<>("user is deleted successfully",HttpStatus.OK);
 	}
