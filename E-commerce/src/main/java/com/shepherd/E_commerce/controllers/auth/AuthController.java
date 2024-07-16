@@ -73,6 +73,7 @@ public class AuthController {
 		
 		
 		UUID user_id = userService.getByEmail(request.email()).user_id();
+		
 		if(refreshTokenService.existsByUserId(user_id)) {
 			refreshTokenService.deleteByUserId(user_id);
 		}
@@ -87,6 +88,11 @@ public class AuthController {
 		throw new UsernameNotFoundException("Invalid email {}" + request.email());
 		
 	}
+	
+	
+
+	  
+
 	
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader(value = "Authorization",required = false) String bearerToken,@RequestBody LogoutRequest request){
@@ -128,23 +134,6 @@ public class AuthController {
 				.map(user ->{
 					String token = jwtService.generteToken(user.getEmail());
 					return new ResponseEntity<>(new TokenRefreshResponse(token, requestRefreshToken),HttpStatus.OK);
-				}).orElseThrow(() -> new RefreshTokenNotFound("Invalid token"));*/
-		
-		
+				}).orElseThrow(() -> new RefreshTokenNotFound("Invalid token"));*/	
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

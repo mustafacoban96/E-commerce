@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,10 +32,9 @@ public class RefreshToken {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	@JsonBackReference
-	private User user;
+	@OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 	
 	@Column(nullable = false, unique = true)
 	private String token;
