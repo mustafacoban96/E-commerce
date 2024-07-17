@@ -15,14 +15,17 @@ const initialState = {
 };
 
 // toolkit promise status artcile:::https://medium.com/lamalab/async-operations-in-redux-with-the-redux-toolkit-thunk-e7d024cbf875
-export const fetchProducts = createAsyncThunk('fetchProducts',async ({ pageNo=0, pageSize=12 }) =>{
-    
+export const fetchProducts = createAsyncThunk('products/fetchProducts',async ({ pageNo=0, pageSize=12 }) =>{
     //?pageNo=5&pageSize=5
     const response = await axiosConfig.get(`/products/product-list?pageNo=${pageNo}&pageSize=${pageSize}`);
-
-    // console.log("fetch product:::::",response.data)
     return response.data;
 });
+
+export const fetchProductById = createAsyncThunk('products/fetchProductsById', async(productId) =>{
+    const response = await axiosConfig.get(`products/product/${productId}`)
+    console.log('proddd::::' ,response.data)
+    return response.data
+})
 
 
 const productSlice = createSlice({
@@ -46,9 +49,14 @@ const productSlice = createSlice({
             state.isLoading = false
             state.error = action.error.message
         })
-        // builder.addCase(fetchProducts.fulfilled,(state,action) =>{
-        //     return action.payload;
-        // })
+        //getByIdProduct
+        builder.addCase(fetchProductById.fulfilled, (state, action) => {
+            const product = action.payload;
+            const existingProduct = state.products.find(p => p.id === product.id);
+            if (!existingProduct) {
+                state.products.push(product);
+            }
+        });
     }
 })
 
@@ -61,4 +69,7 @@ export const getPageSize = (state) => state.products.pageSize;
 export const getTotalElements =(state) => state.products.totalElements;
 export const getTotalPages = (state) => state.products.totalPages;
 export const getLast = (state) => state.products.last;
+export const selectProductById = (state,productId) =>{
+    return state.products.products.find(product => product.id === productId);
+}
 export default productSlice.reducer;
