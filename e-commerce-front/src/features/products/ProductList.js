@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts, getAllProducts} from './productSlice'
+import { fetchProducts, getAllProducts, getError, getIsLoading, getLast, getPageSize, getTotalElements} from './productSlice'
 import ProdcutPageCard from '../../components/Card/ProdcutPageCard'
 import { Link } from 'react-router-dom'
-import { Box, CircularProgress, Grid, IconButton, Stack } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Grid, IconButton, Stack, Typography } from '@mui/material'
 import ViewArrayOutlinedIcon from '@mui/icons-material/ViewArrayOutlined';
 import ViewColumnOutlinedIcon from '@mui/icons-material/ViewColumnOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import { useTheme } from '@emotion/react'
 import { ToastContainer } from 'react-toastify'
+import ProductPagination from '../../components/Pagination/ProductPagination'
 
 const ProductList = () => {
     const dispatch = useDispatch()
     // const products = useSelector(getAllProducts);
-    const products = useSelector((state) => state.products.products)
-    const isLoading = useSelector((state) => state.products.isLoading)
-    const error = useSelector((state) => state.products.error)
+    const products = useSelector(getAllProducts);
+    const isLoading = useSelector(getIsLoading);
+    const error = useSelector(getError);
+    const pageSize = useSelector(getPageSize);
+    const last = useSelector(getLast);
+    const totalProduct = useSelector(getTotalElements)
+    const [myPageSize,SetMyPageSize] = useState(pageSize);
+    console.log('lasst:::',last)
+   
     useEffect(() =>{
-        dispatch(fetchProducts())
-     },[dispatch])
+        dispatch(fetchProducts(myPageSize))
+     },[dispatch,myPageSize])
+
+
+     
+
+
+
      const [filterGrid,setFilterGrid] = useState(3);
      const myTheme = useTheme();
      const [mode] = useState(myTheme.palette.mode);
@@ -29,14 +42,18 @@ const ProductList = () => {
      if (isLoading) {
       return (
         
-          <Box sx={{justifyContent:'center'}}>
+          <Box sx={{display:'flex',justifyContent:'center',height:'100vh',alignItems:'center'}}>
           <CircularProgress color="success" />
         </Box>
         )
     }
   
     if (error) {
-      return error
+      return (
+        <Box sx={{display:'flex',justifyContent:'center',height:'100vh',alignItems:'center'}}>
+          <Alert severity="error">Products is not viewed properly...Please refresh your page</Alert>
+        </Box>
+      )
     }
     
   return (
@@ -79,8 +96,11 @@ const ProductList = () => {
           </Grid> 
   ))
           }
+          
       </Grid>
+      
       }
+       <ProductPagination />
     </Box>
     <ToastContainer/>
     </>

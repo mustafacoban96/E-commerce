@@ -22,7 +22,7 @@ import com.shepherd.E_commerce.service.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/products/")
+@RequestMapping("/api/v1/products")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 
@@ -49,7 +49,7 @@ public class ProductController {
 		@GetMapping("/product-list")
 		public ResponseEntity <ProductListResponseV2> getAllProductsAsListV2(
 				@RequestParam(value="pageNo",defaultValue = "0",required = false) int pageNo,
-				@RequestParam(value="pageSize",defaultValue = "5",required = false) int pageSize
+				@RequestParam(value="pageSize",defaultValue = "12",required = false) int pageSize
 				){
 			return new ResponseEntity<>(productService.getAllProductV2(pageNo,pageSize), HttpStatus.OK);
 		}
