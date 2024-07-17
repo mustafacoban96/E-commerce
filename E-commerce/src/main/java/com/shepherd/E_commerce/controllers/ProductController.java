@@ -1,5 +1,4 @@
 package com.shepherd.E_commerce.controllers;
-
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -17,27 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateProductRequest;
 import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
-import com.shepherd.E_commerce.dto.response.ProductListResponse;
 import com.shepherd.E_commerce.dto.response.ProductListResponseV2;
 import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
-import com.shepherd.E_commerce.service.ProductServcie;
-
+import com.shepherd.E_commerce.service.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/products/")
+@RequestMapping("/api/v1/products")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
+
+	private final ProductService productService;
 	
-	private final ProductServcie productServcie;
 	
-	public ProductController(ProductServcie productServcie) {
-		this.productServcie = productServcie;
+	public ProductController(ProductService productService) {
+		this.productService = productService;
 	}
-	
-	
-	
+
 	//read
+		//@GetMapping("/")
 		/*@GetMapping("/")
 		public ResponseEntity<List<ProductListResponse>> getAllProductsAsList(){
 			
@@ -45,28 +42,30 @@ public class ProductController {
 			
 			return new ResponseEntity<>(listAllProducts,HttpStatus.OK);
 			
+		}
 		}*/
-		
+
+		//@GetMapping("/e" )
 		@GetMapping("/product-list")
 		public ResponseEntity <ProductListResponseV2> getAllProductsAsListV2(
 				@RequestParam(value="pageNo",defaultValue = "0",required = false) int pageNo,
-				@RequestParam(value="pageSize",defaultValue = "5",required = false) int pageSize
+				@RequestParam(value="pageSize",defaultValue = "12",required = false) int pageSize
 				){
-			return new ResponseEntity<>(productServcie.getAllProductV2(pageNo,pageSize), HttpStatus.OK);
+			return new ResponseEntity<>(productService.getAllProductV2(pageNo,pageSize), HttpStatus.OK);
 		}
 	
 	//create
 	@PostMapping("/create-product")
 	public ResponseEntity<String> createProduct(@Valid @RequestBody CreateProductRequest request){
 		System.out.println(request);
-		productServcie.createProduct(request);
+		productService.createProduct(request);
 		return new ResponseEntity<>("Product is added successfully",HttpStatus.CREATED);
 	}
 	
 	//getById
 	@GetMapping("/product/{product_id}")
 	public ResponseEntity<GetProductByIdResponse> getProductById(@PathVariable("product_id") UUID id) {
-		GetProductByIdResponse response = productServcie.getProductById(id);
+		GetProductByIdResponse response = productService.getProductById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
@@ -74,7 +73,7 @@ public class ProductController {
 	//delete
 	@DeleteMapping("/delete-product/{product_id}")
 	public ResponseEntity<String> deleteProductById(@PathVariable("product_id") UUID id){
-		productServcie.deleteProductById(id);
+		productService.deleteProductById(id);
 		return new ResponseEntity<>("the product is deleted successfully",HttpStatus.OK);
 	}
 	
@@ -83,9 +82,8 @@ public class ProductController {
 	public ResponseEntity<ProductUpdateResponse> updatePrdouctById(@PathVariable("product_id") UUID id,
 			@Valid @RequestBody UpdateProductRequest request){
 		
-		ProductUpdateResponse response =  productServcie.updateProductById(id, request);
+		ProductUpdateResponse response =  productService.updateProductById(id, request);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 		
 	}
-
 }
