@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectProductById, fetchProductById } from './productSlice'
 import { useParams } from 'react-router'
-import { Box, Card, CardActionArea, CardMedia, Container, Grid, Stack, Typography } from '@mui/material'
-import ProductList from './ProductList'
+import { Box, Button, Card, CardActionArea, CardMedia, Checkbox, Container, Grid, IconButton, Stack, TextField, Typography } from '@mui/material'
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import { Favorite, FavoriteBorder } from '@mui/icons-material'
+import { pink } from '@mui/material/colors'
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const ProductDetail = () => {
     const { productId } = useParams()
     const dispatch = useDispatch()
     const product = useSelector((state) => selectProductById(state, productId))
     const [loading, setLoading] = useState(true)
-//     <div key={product.id}>
-//     <p>Name: {product.name}</p>
-//     <p>Description: {product.description}</p>
-//     <p>Price: {product.price}</p>
-//     <p>Stock: {product.stock}</p>
-// </div>
-
+    const [quantity, setQuantity] = useState(1);
+  
 const productPhoto = [
     'https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]',
     'https://lp2.hm.com/hmgoepprod?set=source[/81/58/8158f42892dad8e81f9c58e74faa1d44fc7b3a9f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]',
@@ -45,12 +46,12 @@ const productPhoto = [
     return (
         <>
        
-        <Box sx={{backgroundColor:'red'}}>
+        <Box sx={{marginY:'15px'}}>
             <Grid container sx={{justifyContent:'center'}}>
                 <Grid 
                 item 
-                sx={{backgroundColor:'pink',justifyContent:'center' ,display:'flex',alignContent:'center'}}
-                xs={6}
+                sx={{justifyContent:'center' ,display:'flex',alignContent:'center'}}
+                xs={4}
                 >
                     <CardMedia
                         component="img"
@@ -61,8 +62,8 @@ const productPhoto = [
                 </Grid>
                 <Grid 
                 item 
-                sx={{justifyContent:'center',display:'flex',backgroundColor:'lightblue',alignItems:'end'}}
-                xs={0.5}
+                sx={{justifyContent:'center',display:'flex',alignItems:'end'}}
+                
                 >
                    <Stack direction={'column'} spacing={0.2}>
                     {
@@ -82,20 +83,65 @@ const productPhoto = [
                 </Grid>
                 <Grid 
                 item 
-                sx={{backgroundColor:'green'}}
+                sx={{display:'flex',justifyContent:'center'}}
                 xs={5}
                 >
-                    {/* Product Detail Info */}
-                    <Stack>
-                        <Typography variant='h4'>{product.name}</Typography>
-                        <Typography variant='p'>
-                        orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    <Box sx={{display:'flex',flexDirection:'column', justifyContent:'space-around',width:'70%',border:'1px solid black'}}>
+                        {/* Product Detail Info */}
+                    <Stack direction={'column'} spacing={3} 
+                    sx={{p:'5px',margin:'12px'}}>
+                        <Typography 
+                        variant='p' 
+                        sx={{
+                            fontWeight:'bold',
+                            fontSize:'2em'
+                            
+                        }}
+                        >{product.name}</Typography>
+                        <Typography variant='p' sx={{fontFamily:'sans-serif'}}>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
                         </Typography>
-                        <Typography>
-                        {product.price} ₺
+                        <Typography variant='h6'>
+                            {product.price} ₺
                         </Typography>
+                        
                     </Stack>
-                    
+                        <Stack direction={'row'} sx={{display:'flex',justifyContent:'center'}}>
+
+                            <IconButton  onClick={() => setQuantity(prev => Math.max(prev - 1, 1))} size="small" sx={{color:'red'}}>
+                                <RemoveIcon fontSize="inherit" />
+                            </IconButton>
+                            <TextField 
+                                size='small' 
+                                inputProps={{ style:{textAlign:'center'}}} 
+                                value={Number(quantity)}
+                                onChange={(e) => {
+                                    const value = Math.max(0, Math.min(Number(e.target.value), product.stock));
+                                    setQuantity(value);
+                                }}
+                            />
+                            <IconButton onClick={() => setQuantity(prev => Math.min(prev + 1, product.stock))} size="small" sx={{color:'red'}}>
+                                <AddIcon fontSize="inherit" />
+                            </IconButton>
+                        </Stack>
+                        <Stack 
+                        direction={'row'} 
+                        
+                        sx={{display:'flex',justifyContent:'space-around'}}>
+                            <Button color='error' variant='contained' sx={{width:'80%'}}>ADD TO CART</Button>
+                            <Checkbox 
+                            {...label} 
+                            icon={<FavoriteBorder />} 
+                            checkedIcon={<Favorite />}
+                            sx={{
+                                color: pink[800],
+                                '&.Mui-checked': {
+                                  color: pink[600],
+                                },
+                              }}
+                            />
+                        </Stack>
+                    </Box>
                     
                 </Grid>
             </Grid>
