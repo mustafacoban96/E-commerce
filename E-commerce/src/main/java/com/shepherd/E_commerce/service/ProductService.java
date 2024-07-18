@@ -11,7 +11,7 @@ import com.shepherd.E_commerce.dto.response.ProductListResponseV2;
 import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
 import com.shepherd.E_commerce.models.Products;
 
-public interface ProductServcie {
+public interface ProductService {
 	
 	public Products createProduct(CreateProductRequest request);
 	public List<ProductListResponse> getAllProducts();
