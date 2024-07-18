@@ -8,6 +8,8 @@ import NotFound from './views/NotFound/NotFound'
 import Register from "./views/Register/Register";
 
 import ProductList from "./features/products/ProductList";
+import ProductDetail from "./features/products/ProductDetail";
+
 
 
 
@@ -31,6 +33,11 @@ const router = createBrowserRouter([
             {
                 path:'/products',
                 element:<ProductList/>
+            },
+            {   
+                element:<ProductDetail/>,
+                path:'/product/:productId',
+               
             }
         ]
     },

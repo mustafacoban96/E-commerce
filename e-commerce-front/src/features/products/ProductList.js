@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts, getAllProducts, getError, getIsLoading, getLast, getPageSize, getTotalElements} from './productSlice'
+import { fetchProducts, getAllProducts, getError, getIsLoading, getLast, getPageSize, getTotalElements, selectProductById} from './productSlice'
 import ProdcutPageCard from '../../components/Card/ProdcutPageCard'
 import { Link } from 'react-router-dom'
 import { Alert, Box, Button, CircularProgress, Grid, IconButton, Stack, Typography } from '@mui/material'
@@ -18,19 +18,10 @@ const ProductList = () => {
     const isLoading = useSelector(getIsLoading);
     const error = useSelector(getError);
     const pageSize = useSelector(getPageSize);
-    const last = useSelector(getLast);
-    const totalProduct = useSelector(getTotalElements)
     const [myPageSize,SetMyPageSize] = useState(pageSize);
-    console.log('lasst:::',last)
-   
     useEffect(() =>{
         dispatch(fetchProducts(myPageSize))
      },[dispatch,myPageSize])
-
-
-     
-
-
 
      const [filterGrid,setFilterGrid] = useState(3);
      const myTheme = useTheme();
@@ -88,7 +79,7 @@ const ProductList = () => {
             sm={6}
             xs={12}
             >
-              <Link to={'/productt'} key={product.id} style={{ textDecoration: 'none'}}>
+              <Link to={`/product/${product.id}`} key={product.id} style={{ textDecoration: 'none'}}>
                 <ProdcutPageCard
                   product={product}
                 />
