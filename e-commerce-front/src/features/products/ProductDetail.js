@@ -85,9 +85,17 @@ const productPhoto = [
                 sx={{backgroundColor:'green'}}
                 xs={5}
                 >
-                    <p>{product.name}</p>
-                    <p>{product.description}</p>
-                    <p>{product.price}</p>
+                    {/* Product Detail Info */}
+                    <Stack>
+                        <Typography variant='h4'>{product.name}</Typography>
+                        <Typography variant='p'>
+                        orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        </Typography>
+                        <Typography>
+                        {product.price} ₺
+                        </Typography>
+                    </Stack>
+                    
                     
                 </Grid>
             </Grid>
