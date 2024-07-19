@@ -80,7 +80,7 @@ public class User implements UserDetails,Serializable{
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private RefreshToken refreshToken;
 	
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Orders> orders;
 	
 	
