@@ -1,5 +1,6 @@
 package com.shepherd.E_commerce.models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +44,7 @@ import lombok.ToString;
 @Table(name = "users")
 @Builder
 @ToString(exclude = "refresh_token")
-public class User implements UserDetails{
+public class User implements UserDetails,Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -74,14 +75,21 @@ public class User implements UserDetails{
 	private Set<Roles> authorities;
 	
 	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
-	private RefreshToken refresh_token;
 	
+<<<<<<< HEAD
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Orders> orders;
 
 	/*Hello*/
+=======
+	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private RefreshToken refreshToken;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Orders> orders;
+	
+	
+>>>>>>> master
 	
 	
 }

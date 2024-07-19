@@ -19,6 +19,7 @@ import com.shepherd.E_commerce.dto.requests.UpdateUserRequest;
 import com.shepherd.E_commerce.dto.response.GetUserByIdResponse;
 import com.shepherd.E_commerce.dto.response.UserListResponse;
 import com.shepherd.E_commerce.dto.response.UserUpdateResponse;
+import com.shepherd.E_commerce.service.RefreshTokenService;
 import com.shepherd.E_commerce.service.UserService;
 import jakarta.validation.Valid;
 
@@ -31,9 +32,11 @@ import jakarta.validation.Valid;
 public class UserController {
 	
 	private final UserService userService;
+	private final RefreshTokenService refreshTokenService;
 	
-	public UserController(UserService userService) {
+	public UserController(UserService userService,RefreshTokenService refreshTokenService) {
 		this.userService = userService;
+		this.refreshTokenService = refreshTokenService;
 	}
 	
 	
@@ -61,6 +64,10 @@ public class UserController {
 	
 	@DeleteMapping("/delete-user/{user_id}")
 	public ResponseEntity<String> deleteUserById(@PathVariable("user_id") UUID id){
+		//ERROR: update or delete on table "users" violates foreign key constraint "fkjtx87i0jvq2svedphegvdwcuy" on table "refresh_token"
+		/*if(refreshTokenService.existsByUserId(id)) {
+			refreshTokenService.deleteByUserId(id); // refresh token deleted
+		}*/
 		userService.deleteUserById(id);
 		return new ResponseEntity<>("user is deleted successfully",HttpStatus.OK);
 	}

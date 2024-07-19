@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useAuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
 const axiosConfig = axios.create({
