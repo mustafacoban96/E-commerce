@@ -76,12 +76,7 @@ public class User implements UserDetails,Serializable{
 	
 	
 	
-<<<<<<< HEAD
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Orders> orders;
 
-	/*Hello*/
-=======
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private RefreshToken refreshToken;
 	
@@ -89,7 +84,6 @@ public class User implements UserDetails,Serializable{
 	private List<Orders> orders;
 	
 	
->>>>>>> master
 	
 	
 }
