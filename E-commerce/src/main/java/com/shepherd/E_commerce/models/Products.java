@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,4 +42,7 @@ public class Products {
 	@UpdateTimestamp
 	@Column(name="update_at")
 	private Timestamp update_at;
+	
+	@OneToOne
+	private OrderItems orderItems;
 }

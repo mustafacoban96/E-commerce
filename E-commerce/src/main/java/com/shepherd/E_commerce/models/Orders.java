@@ -1,6 +1,7 @@
 package com.shepherd.E_commerce.models;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.annotations.OnDelete;
@@ -17,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,4 +50,7 @@ public class Orders {
 	//@JsonIgnore is used to ignore the logical property used in serialization and deserialization.
 	@JsonIgnore
 	private User user;
+	
+	@OneToMany(mappedBy = "order")
+	private Set<OrderItems> orderItems;
 }
