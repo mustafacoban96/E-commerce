@@ -40,14 +40,11 @@ public class OrderItems {
 	private UUID id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "order_id",nullable = false)
+	@JoinColumn(name = "order_id",nullable = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Orders order;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="product_id",referencedColumnName = "id")
-	private Products products;
 	
 	private int quantity;
 	private Long unit_price;

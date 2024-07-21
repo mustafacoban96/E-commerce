@@ -21,8 +21,10 @@ import com.shepherd.E_commerce.exceptions.EmailAlreadyExistsException;
 import com.shepherd.E_commerce.exceptions.PasswordMismatchException;
 import com.shepherd.E_commerce.exceptions.UserNotFoundException;
 import com.shepherd.E_commerce.mappers.UserMapper;
+import com.shepherd.E_commerce.models.Cart;
 import com.shepherd.E_commerce.models.User;
 import com.shepherd.E_commerce.repository.UserRepository;
+import com.shepherd.E_commerce.service.CartService;
 import com.shepherd.E_commerce.service.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -34,11 +36,16 @@ public class UserServiceImpl implements UserService{
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final BCryptPasswordEncoder passwordEncoder;
+	private final CartService cartService;
 	
-	public UserServiceImpl (UserRepository userRepository,UserMapper userMapper,BCryptPasswordEncoder passwordEncoder) {
+	public UserServiceImpl (UserRepository userRepository,
+			UserMapper userMapper,
+			BCryptPasswordEncoder passwordEncoder,
+			CartService cartService) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
+		this.cartService = cartService;
 	}
 	
 	@Override
@@ -71,7 +78,9 @@ public class UserServiceImpl implements UserService{
 				.isEnabled(true)
 				.accountNonLocked(true)
 				.build();
-		return userRepository.save(user);
+		User persistUser = userRepository.save(user);
+		cartService.newCart(persistUser);
+		return persistUser;
 		
 		
 	}

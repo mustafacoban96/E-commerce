@@ -84,6 +84,9 @@ public class User implements UserDetails,Serializable{
 	private List<Orders> orders;
 	
 	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+    private Cart cart;
+	
 	
 	
 }
