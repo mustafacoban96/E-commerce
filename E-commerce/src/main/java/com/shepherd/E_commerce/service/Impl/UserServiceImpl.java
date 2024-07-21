@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 	public UserServiceImpl (UserRepository userRepository,
 			UserMapper userMapper,
 			BCryptPasswordEncoder passwordEncoder,
-			@Lazy CartService cartService) {
+			CartService cartService) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
