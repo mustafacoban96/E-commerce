@@ -2,6 +2,7 @@ package com.shepherd.E_commerce.controllers;
 
 import java.util.UUID;
 
+import com.shepherd.E_commerce.dto.requests.CartItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class CartController {
 	
 	
 	@PostMapping("/add-to-cart")
-	public ResponseEntity<String> addItemToCart(@RequestHeader(value = "Authorization",required = false) String bearerToken,@RequestBody AddItemToCartRequest request){
+	public ResponseEntity<String> addItemToCart(@RequestHeader(value = "Authorization",required = false) String bearerToken, @RequestBody CartItem request){
 		String token = bearerToken.substring(7);
 		cartService.addItemToCart(request,token);
 		return new ResponseEntity<>("Item was added to the cart succefully",HttpStatus.OK);

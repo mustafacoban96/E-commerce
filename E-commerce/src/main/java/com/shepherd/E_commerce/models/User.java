@@ -43,7 +43,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "users")
 @Builder
-@ToString(exclude = "refresh_token")
+@ToString(exclude = {"refreshToken", "cart"})
 public class User implements UserDetails,Serializable{
 	
 	@Id

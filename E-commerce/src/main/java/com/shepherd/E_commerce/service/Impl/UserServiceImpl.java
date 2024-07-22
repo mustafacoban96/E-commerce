@@ -22,7 +22,7 @@ import com.shepherd.E_commerce.exceptions.EmailAlreadyExistsException;
 import com.shepherd.E_commerce.exceptions.PasswordMismatchException;
 import com.shepherd.E_commerce.exceptions.UserNotFoundException;
 import com.shepherd.E_commerce.mappers.UserMapper;
-import com.shepherd.E_commerce.models.Cart;
+
 import com.shepherd.E_commerce.models.User;
 import com.shepherd.E_commerce.repository.UserRepository;
 import com.shepherd.E_commerce.service.CartService;

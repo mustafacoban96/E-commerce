@@ -1,6 +1,7 @@
 package com.shepherd.E_commerce.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
@@ -19,6 +20,8 @@ public interface ProductService {
 	public void deleteProductById(UUID product_id);
 	public ProductUpdateResponse updateProductById(UUID id,UpdateProductRequest request);
 	public GetProductByIdResponse getProductById(UUID id);
+
+	public Products findProductById(UUID product_id);
 	
 
 }

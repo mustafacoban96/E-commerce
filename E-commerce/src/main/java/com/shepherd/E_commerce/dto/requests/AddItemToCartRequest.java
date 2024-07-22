@@ -14,7 +14,7 @@ import lombok.Data;
 public class AddItemToCartRequest {
 	
 	@NotNull(message = "Product cannot be null")
-	private Set<Products> cart_items;
+	private Set<CartItem> cart_items;
 
 	
 	

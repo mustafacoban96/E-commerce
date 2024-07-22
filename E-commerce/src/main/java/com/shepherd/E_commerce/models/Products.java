@@ -1,6 +1,7 @@
 package com.shepherd.E_commerce.models;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,11 +48,7 @@ public class Products {
 	@UpdateTimestamp
 	@Column(name="update_at")
 	private Timestamp update_at;
-	
-	
-	 @ManyToOne
-	 private Cart cart;
-	
+
 	
 	
 }

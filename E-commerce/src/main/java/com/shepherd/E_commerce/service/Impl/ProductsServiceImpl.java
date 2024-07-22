@@ -1,6 +1,7 @@
 package com.shepherd.E_commerce.service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -97,6 +98,15 @@ public class ProductsServiceImpl implements ProductService{
 		GetProductByIdResponse response = productsMapper.ProductEntityToResponseById(product);
 		
 		return response;
+	}
+
+	@Override
+	public Products findProductById(UUID product_id) {
+		if(!productRepository.existsById(product_id)){
+			throw new ProductNotFoundException("Product not found");
+		}
+
+		return productRepository.getReferenceById(product_id);
 	}
 
 	@Override
