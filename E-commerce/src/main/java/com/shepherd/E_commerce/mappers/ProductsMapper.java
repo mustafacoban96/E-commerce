@@ -1,5 +1,6 @@
 package com.shepherd.E_commerce.mappers;
 
+import com.shepherd.E_commerce.dto.response.IndividualCartItemResponse;
 import org.springframework.stereotype.Component;
 
 import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
@@ -37,6 +38,23 @@ public class ProductsMapper {
 		}
 		
 		return new GetProductByIdResponse(product.getId(),product.getName(), product.getDescription(),product.getStock(),product.getPrice());
+	}
+
+
+	public IndividualCartItemResponse productToIndividualCartItem(Products product){
+		if(product == null) {
+			return null;
+		}
+
+		IndividualCartItemResponse individualCartItemResponse = IndividualCartItemResponse.builder()
+				.id(product.getId())
+				.name(product.getName())
+				.description(product.getDescription())
+				.price(product.getPrice())
+				.stock(product.getStock())
+				.build();
+
+		return individualCartItemResponse;
 	}
 
 }
