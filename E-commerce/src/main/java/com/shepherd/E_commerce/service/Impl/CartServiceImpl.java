@@ -3,7 +3,9 @@ package com.shepherd.E_commerce.service.Impl;
 
 
 import com.shepherd.E_commerce.dto.requests.CartItem;
+import com.shepherd.E_commerce.dto.response.IndividualCartItemResponse;
 import com.shepherd.E_commerce.exceptions.CartNotFoundException;
+import com.shepherd.E_commerce.mappers.ProductsMapper;
 import com.shepherd.E_commerce.models.Products;
 import com.shepherd.E_commerce.service.ProductService;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,10 @@ import com.shepherd.E_commerce.service.CartService;
 import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService{
@@ -25,41 +29,34 @@ public class CartServiceImpl implements CartService{
 	private final UserService userService;
 
 	private final ProductService productService;
+	private final ProductsMapper productsMapper;
 	
 	public CartServiceImpl(
 			CartRepository cartRepository,
 			JwtService jwtService,
 			UserService userService,
-			ProductService productService) {
+			ProductService productService,
+			ProductsMapper productsMapper) {
 		this.cartRepository = cartRepository;
 		this.jwtService = jwtService;
 		this.userService = userService;
 		this.productService = productService;
+		this.productsMapper = productsMapper;
 	}
 	
 	
 	@Override
 	public void addItemToCart(CartItem request, String access_token) {
-		// Extract email from access token
 		String email = jwtService.extractEmail(access_token);
-
-		// Get user ID from email
 		UUID user_id = userService.getUserByEmailAsEntity(email).getId();
-
-		// Fetch the user's cart or throw an exception if not found
 		Cart cart = (Cart) cartRepository.findByUserId(user_id)
 				.orElseThrow(() -> new CartNotFoundException("Cart not found"));
-
-		// Find the product by ID
 		Products product = productService.findProductById(request.cart_id());
-
-		// Add the product to the cart's items
 		cart.getCartItems().add(product);
-
-		// Save the updated cart
 		cartRepository.save(cart);
 	}
-	
+
+
 
 	@Override
 	public Cart newCart(User user) {
@@ -67,8 +64,23 @@ public class CartServiceImpl implements CartService{
 				.cartItems(null)
 				.user(user)
 				.build();
-		
 		return cartRepository.save(cart);
 	}
+
+	@Override
+	public List<IndividualCartItemResponse> getAllCartItemByUserId(String access_token) {
+		String email = jwtService.extractEmail(access_token);
+		UUID user_id = userService.getUserByEmailAsEntity(email).getId();
+		Cart cart = (Cart) cartRepository.findByUserId(user_id)
+				.orElseThrow(() -> new CartNotFoundException("Cart not found"));
+		List<Products> cartItemsList = cartRepository.findAllById(cart.getId());
+
+		List<IndividualCartItemResponse> cartItemResponseList = cartItemsList.stream().map(product ->
+				productsMapper.productToIndividualCartItem(product)).collect(Collectors.toList());
+
+		return cartItemResponseList;
+	}
+
+
 
 }

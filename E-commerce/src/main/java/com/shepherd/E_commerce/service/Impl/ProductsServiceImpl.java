@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.shepherd.E_commerce.dto.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,10 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.shepherd.E_commerce.dto.requests.CreateProductRequest;
 import com.shepherd.E_commerce.dto.requests.UpdateProductRequest;
-import com.shepherd.E_commerce.dto.response.GetProductByIdResponse;
-import com.shepherd.E_commerce.dto.response.ProductListResponse;
-import com.shepherd.E_commerce.dto.response.ProductListResponseV2;
-import com.shepherd.E_commerce.dto.response.ProductUpdateResponse;
 import com.shepherd.E_commerce.exceptions.ProductNotFoundException;
 import com.shepherd.E_commerce.mappers.ProductsMapper;
 import com.shepherd.E_commerce.models.Products;
