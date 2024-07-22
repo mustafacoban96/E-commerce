@@ -1,17 +1,14 @@
 package com.shepherd.E_commerce.models;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -31,6 +28,7 @@ public class Cart {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id",nullable = false)
+	@ToString.Exclude
 	private User user;
 	
 	
