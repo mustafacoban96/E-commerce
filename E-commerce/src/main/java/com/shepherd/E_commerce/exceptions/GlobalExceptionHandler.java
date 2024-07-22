@@ -96,7 +96,15 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.FORBIDDEN);
 	}
 	
-	
+	///Cart Exception
+	@ExceptionHandler(CartNotFoundException.class)
+	public ResponseEntity<ErrorObject> handleCartNotFoundException(CartNotFoundException ex){
+		errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorObject.setMessage(ex.getMessage());
+		errorObject.setTimestamp(new Date());
+
+		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.NOT_FOUND);
+	}
 	
 
 }
