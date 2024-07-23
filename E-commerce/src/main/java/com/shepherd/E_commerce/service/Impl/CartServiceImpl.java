@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService{
 		UUID user_id = userService.getUserByEmailAsEntity(email).getId();
 		Cart cart = (Cart) cartRepository.findByUserId(user_id)
 				.orElseThrow(() -> new CartNotFoundException("Cart not found"));
-		List<Products> cartItemsList = cartRepository.findAllById(cart.getId());
+		List<Products> cartItemsList = cartRepository.findProductsByCartId(cart.getId());
 
 		List<IndividualCartItemResponse> cartItemResponseList = cartItemsList.stream().map(product ->
 				productsMapper.productToIndividualCartItem(product)).collect(Collectors.toList());
