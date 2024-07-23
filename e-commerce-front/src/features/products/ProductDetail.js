@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectProductById, fetchProductById } from './productSlice'
 import { useParams } from 'react-router'
-import { Box, Button, Card, CardActionArea, CardMedia, Checkbox, Container, Grid, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardActionArea, CardMedia, Checkbox, Container, Grid, IconButton, ImageList, ImageListItem, Stack, TextField, Typography } from '@mui/material'
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import { pink } from '@mui/material/colors'
@@ -46,7 +46,7 @@ const productPhoto = [
     return (
         <>
        
-        <Box sx={{marginY:'15px'}}>
+        <Box sx={{display:{xs:'none',lg:'block'},marginY:'15px'}}>
             <Grid container sx={{justifyContent:'center'}}>
                 <Grid 
                 item 
@@ -85,6 +85,7 @@ const productPhoto = [
                 item 
                 sx={{display:'flex',justifyContent:'center'}}
                 xs={5}
+
                 >
                     <Box sx={{display:'flex',flexDirection:'column', justifyContent:'space-around',width:'70%',border:'1px solid black'}}>
                         {/* Product Detail Info */}
@@ -146,9 +147,80 @@ const productPhoto = [
                 </Grid>
             </Grid>
         </Box>
+                                
+        {/* (sm)600 px<screen< 900(md) px  */}
+    <Box sx={{
+    display: {md:'flex',lg:'none'},
+    flexDirection: { xs: 'column', md: 'row' },
+    justifyContent: 'space-around',
+    p:'20px'
+}}>
+    <Box sx={{
+        width: { xs: '100%', md: '50%' },
+        overflowY: 'auto',
+        height: { xs: 'auto', md: '70vh' }
+    }}>
+        <ImageList variant="masonry" cols={2} gap={8}>
+            {productPhoto.map((item, index) => (
+                <ImageListItem key={index}>
+                    <img
+                        srcSet={`${item}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${item}?w=248&fit=crop&auto=format`}
+                        loading="lazy"
+                    />
+                </ImageListItem>
+            ))}
+        </ImageList>
+    </Box>
+    <Box sx={{
+        width: { xs: '100%', md: '40%' },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        border: '1px solid black',
+        position: { md: 'sticky' },
+        top: 0,
+        marginY:'10px'
+    }}>
+        {/* Product Detail Info */}
+        <Stack direction={'column'} spacing={3} sx={{ p: '5px', margin: '12px' }}>
+            <Typography
+                variant='p'
+                sx={{
+                    fontWeight: 'bold',
+                    fontSize: '2em'
+                }}
+            >
+                {product.name}
+            </Typography>
+            <Typography variant='p' sx={{ fontFamily: 'sans-serif' }}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            </Typography>
+            <Typography variant='h6'>
+                {product.price} ₺
+            </Typography>
+        </Stack>
+
+        <Stack direction={'row'} sx={{ display: 'flex', justifyContent: 'space-around' ,p:2}}>
+            <Button color='error' variant='contained' sx={{ width: '80%' }}>ADD TO CART</Button>
+            <Checkbox
+                {...label}
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                sx={{
+                    color: pink[800],
+                    '&.Mui-checked': {
+                        color: pink[600],
+                    },
+                }}
+            />
+        </Stack>
+    </Box>
+</Box>
+
         
         
-        </>
+    </>
         
     )
 }
