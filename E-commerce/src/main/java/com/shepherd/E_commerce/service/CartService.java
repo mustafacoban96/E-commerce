@@ -16,7 +16,8 @@ public interface CartService {
 	
 	void addItemToCart(CartItem request, String token);
 	Cart newCart(User user);
-
 	public List<IndividualCartItemResponse> getAllCartItemByUserId(String token);
+
+	public void removeItemFromCart(CartItem request, String token);
 
 }
