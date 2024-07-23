@@ -56,7 +56,16 @@ public class CartServiceImpl implements CartService{
 		cartRepository.save(cart);
 	}
 
-
+	@Override
+	public void removeItemFromCart(CartItem request, String access_token) {
+		String email = jwtService.extractEmail(access_token);
+		UUID user_id = userService.getUserByEmailAsEntity(email).getId();
+		Cart cart = (Cart) cartRepository.findByUserId(user_id)
+				.orElseThrow(() -> new CartNotFoundException("Cart not found"));
+		Products product = productService.findProductById(request.cart_item_id());
+		cart.getCartItems().remove(product);
+		cartRepository.save(cart);
+	}
 
 	@Override
 	public Cart newCart(User user) {
@@ -80,6 +89,7 @@ public class CartServiceImpl implements CartService{
 
 		return cartItemResponseList;
 	}
+
 
 
 

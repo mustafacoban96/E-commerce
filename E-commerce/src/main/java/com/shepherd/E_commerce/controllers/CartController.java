@@ -27,7 +27,8 @@ public class CartController {
 		
 	}
 	@PostMapping("/add-to-cart")
-	public ResponseEntity<String> addItemToCart(@RequestHeader(value = "Authorization",required = false) String bearerToken, @RequestBody CartItem request){
+	public ResponseEntity<String> addItemToCart(@RequestHeader(value = "Authorization",required = false) String bearerToken,
+												@RequestBody CartItem request){
 		String token = bearerToken.substring(7);
 		cartService.addItemToCart(request,token);
 		return new ResponseEntity<>("Item was added to the cart succefully",HttpStatus.OK);
@@ -38,6 +39,15 @@ public class CartController {
 		String token = bearerToken.substring(7);
 		List<IndividualCartItemResponse> cartlist = cartService.getAllCartItemByUserId(token);
 		return new ResponseEntity<>(cartlist,HttpStatus.OK);
+	}
+
+	@PostMapping("/remove-from-cart")
+	public ResponseEntity<String> removeItemFromTheCart(@RequestHeader(value = "Authorization",required = false) String bearerToken,
+														@RequestBody CartItem request){
+		String token = bearerToken.substring(7);
+		cartService.removeItemFromCart(request,token);
+		return new ResponseEntity<>("Item was removed to the cart succefully",HttpStatus.OK);
+
 	}
 
 }
