@@ -8,6 +8,7 @@ import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import { pink } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import HomeSlide2 from '../../views/Home/HomeSlide2'
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -217,7 +218,10 @@ const productPhoto = [
         </Stack>
     </Box>
 </Box>
-
+    <Box sx={{padding:'5px',margin:5}}>
+        <Typography variant='h5' sx={{textAlign:'left',fontWeight:'bold'}}>Similar Product</Typography>
+        <HomeSlide2/>
+    </Box>
         
         
     </>
