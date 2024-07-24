@@ -9,6 +9,7 @@ import Register from "./views/Register/Register";
 
 import ProductList from "./features/products/ProductList";
 import ProductDetail from "./features/products/ProductDetail";
+import Cart from "./features/cart/Cart";
 
 
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
                 element:<ProductDetail/>,
                 path:'/product/:productId',
                
+            },
+            {
+                element:<Cart/>,
+                path:"/cart"
             }
         ]
     },

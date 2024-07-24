@@ -138,11 +138,13 @@ const Navbar = () => {
         spacing={1.5}
         alignItems='center'
         >
+         <Link to='/cart'>
           <IconButton>
-          <Badge badgeContent={2} color='error'>
-            <ShoppingCartOutlinedIcon style={{color:`${myMode(mode)}`}}/>
-          </Badge>
-          </IconButton>
+            <Badge badgeContent={2} color='error'>
+              <ShoppingCartOutlinedIcon style={{color:`${myMode(mode)}`}}/>
+            </Badge>
+            </IconButton>
+          </Link>
           <IconButton 
           style={{color:`${myMode(mode)}`}}
           id="fade-button"
