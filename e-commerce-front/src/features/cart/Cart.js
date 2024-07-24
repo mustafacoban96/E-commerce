@@ -17,6 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Cart = () => {
     const [quantity, setQuantity] = useState(1);
+    const [totalPrice,setTotalPrice] = useState()
   return (
    <Box 
     sx={{display:'flex',justifyContent:'space-around'}}
