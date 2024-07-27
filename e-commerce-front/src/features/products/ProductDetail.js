@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectProductById, fetchProductById } from './productSlice'
 import { useParams } from 'react-router'
-import { Box, Button, Card, CardActionArea, CardMedia, Checkbox, Container, Grid, IconButton, ImageList, ImageListItem, Stack, TextField, Typography } from '@mui/material'
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import { Box, Button, Card, CardActionArea, CardMedia, Checkbox,Grid, IconButton, ImageList, ImageListItem, Stack, TextField, Typography } from '@mui/material'
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import { pink } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';

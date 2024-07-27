@@ -42,7 +42,7 @@ const ProductList = () => {
     if (error) {
       return (
         <Box sx={{display:'flex',justifyContent:'center',height:'100vh',alignItems:'center'}}>
-          <Alert severity="error">Products is not viewed properly...Please refresh your page</Alert>
+          <Alert severity="error">Products is not viewed properly...Please refresh the page</Alert>
         </Box>
       )
     }
