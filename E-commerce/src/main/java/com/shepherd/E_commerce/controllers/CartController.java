@@ -14,6 +14,7 @@ import com.shepherd.E_commerce.service.CartService;
 
 @RestController
 @RequestMapping("/api/v1/cart")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CartController {
 	
 	
@@ -22,9 +23,6 @@ public class CartController {
 	
 	public CartController(CartService cartService,JwtService jwtService) {
 		this.cartService = cartService;
-
-		
-		
 	}
 	@PostMapping("/add-to-cart")
 	public ResponseEntity<String> addItemToCart(@RequestHeader(value = "Authorization",required = false) String bearerToken,

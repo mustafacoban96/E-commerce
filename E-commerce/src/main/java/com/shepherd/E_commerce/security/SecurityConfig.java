@@ -18,7 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.shepherd.E_commerce.models.Roles;
 import com.shepherd.E_commerce.service.UserService;
 import com.shepherd.E_commerce.service.securityService.JwtTokenBlackListService;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 
 
 @Configuration
@@ -50,6 +54,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
 		return http
+				.cors(customizer -> customizer.configurationSource(corsConfigurationSource()))
 				.csrf(AbstractHttpConfigurer::disable)
 				.exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(jwtAuthEntryPoint))
 				.authorizeHttpRequests(x ->
@@ -59,7 +64,7 @@ public class SecurityConfig {
 								.requestMatchers("/admin/**").hasRole(Roles.ROLE_ADMIN.getValue())
 								.requestMatchers("/api/v1/products/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
 								.requestMatchers("/api/v1/users/**").hasAnyRole(Roles.ROLE_ADMIN.getValue(),Roles.ROLE_USER.getValue())
-								.requestMatchers("/api/v1/cart/**").hasRole(Roles.ROLE_USER.getValue())
+								.requestMatchers("/api/v1/cart/**","/api/v1/cart/show-cart").hasRole(Roles.ROLE_USER.getValue())
 						)
 				.formLogin(AbstractHttpConfigurer::disable)
 				.sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -68,7 +73,19 @@ public class SecurityConfig {
 				.addFilterBefore(new JwtTokenBlackListFilter(jwtTokenBlackListService), JwtAuthFilter.class)
 				.build();
 	}
-	
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
