@@ -29,7 +29,7 @@ public class CartController {
 												@RequestBody CartItem request){
 		String token = bearerToken.substring(7);
 		cartService.addItemToCart(request,token);
-		return new ResponseEntity<>("Item was added to the cart succefully",HttpStatus.OK);
+		return new ResponseEntity<>("Item was added to the cart successfully",HttpStatus.OK);
 		}
 
 	@GetMapping("/show-cart")
