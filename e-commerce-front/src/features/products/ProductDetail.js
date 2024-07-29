@@ -8,6 +8,7 @@ import { pink } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import HomeSlide2 from '../../views/Home/HomeSlide2'
+import { addCartItem } from '../cart/cartSlice'
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -17,7 +18,8 @@ const ProductDetail = () => {
     const product = useSelector((state) => selectProductById(state, productId))
     const [loading, setLoading] = useState(true)
     const [quantity, setQuantity] = useState(1);
-  
+    const [productMain, setProductMain] = useState('https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]')
+    
 const productPhoto = [
     'https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]',
     'https://lp2.hm.com/hmgoepprod?set=source[/81/58/8158f42892dad8e81f9c58e74faa1d44fc7b3a9f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]',
@@ -55,7 +57,7 @@ const productPhoto = [
                 >
                     <CardMedia
                         component="img"
-                        image={'https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]'}
+                        image={productMain}
                         alt="green iguana"
                         sx={{maxWidth:380,marginY:'5px'}}
                     />
@@ -67,8 +69,8 @@ const productPhoto = [
                 >
                    <Stack direction={'column'} spacing={0.2}>
                     {
-                        productPhoto.map((p) =>
-                            <Card elevation={0} sx={{ maxWidth: 40}}>
+                        productPhoto.map((p,index) =>
+                            <Card key={index} onClick={() => setProductMain(p)} elevation={0} sx={{ maxWidth: 40}}>
                             <CardActionArea>
                                 <CardMedia
                                 component="img"
@@ -129,7 +131,8 @@ const productPhoto = [
                         direction={'row'} 
                         
                         sx={{display:'flex',justifyContent:'space-around'}}>
-                            <Button color='error' variant='contained' sx={{width:'80%'}}>ADD TO CART</Button>
+                            <Button color='error' variant='contained' sx={{width:'80%'}}
+                            onClick={() => dispatch(addCartItem(productId))}>ADD TO CART</Button>
                             <Checkbox 
                             {...label} 
                             icon={<FavoriteBorder />} 
@@ -202,7 +205,7 @@ const productPhoto = [
         </Stack>
 
         <Stack direction={'row'} sx={{ display: 'flex', justifyContent: 'space-around' ,p:2}}>
-            <Button color='error' variant='contained' sx={{ width: '80%' }}>ADD TO CART</Button>
+            <Button color='error' variant='contained' sx={{ width: '80%' }} onClick={() => dispatch(addCartItem(productId))}>ADD TO CART</Button>
             <Checkbox
                 {...label}
                 icon={<FavoriteBorder />}
