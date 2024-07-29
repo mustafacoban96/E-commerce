@@ -1,5 +1,5 @@
 
-import { Box, Button, Container, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Container, Grid, IconButton, Stack} from '@mui/material'
 import React from 'react'
 import {data} from '../../data'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';

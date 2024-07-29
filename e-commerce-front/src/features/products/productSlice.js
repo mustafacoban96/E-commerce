@@ -23,7 +23,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts',async ({ 
 
 export const fetchProductById = createAsyncThunk('products/fetchProductsById', async(productId) =>{
     const response = await axiosConfig.get(`products/product/${productId}`)
-    console.log('proddd::::' ,response.data)
+    // console.log('proddd::::' ,response.data)
     return response.data
 })
 

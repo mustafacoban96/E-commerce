@@ -4,7 +4,9 @@ import { toast } from "react-toastify";
 const axiosConfig = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL, //replace with your BaseURL
   headers: {
+  
     'Content-Type': 'application/json', // change according header type accordingly
+
   },
 });
 const refreshToken = async () => {
@@ -65,6 +67,7 @@ axiosConfig.interceptors.request.use(
             const access_token = await refreshToken();
             localStorage.setItem('ACCESS_TOKEN', access_token);  //set new access token
             originalRequest.headers.Authorization = `Bearer ${access_token}`;
+            console.log(originalRequest)
             return axios(originalRequest); //recall Api with new token
           } catch (error) {
             console.log('zz:',error)

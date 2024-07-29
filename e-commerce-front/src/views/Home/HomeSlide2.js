@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, IconButton } from '@mui/material';
+import { Box, Container,IconButton } from '@mui/material';
 import { data } from '../../data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
