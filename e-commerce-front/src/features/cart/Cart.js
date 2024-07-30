@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Box, Button, CardMedia, CircularProgress, Divider, IconButton, Paper, Stack, styled, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CardMedia, CircularProgress, Divider, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartItems, getCartItems, getError, getIsLoading, getTotalPrice, removeCartItem,incrementTotal,decrementTotal } from './cartSlice';
+import { useAuthContext } from '../../context/AuthContext';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,6 +24,31 @@ const Cart = () => {
     const isLoading = useSelector(getIsLoading);
     const error = useSelector(getError);
     const totalPrice = useSelector(getTotalPrice);
+    const [orderItems,setOrderItems] = useState({});
+    const {user} = useAuthContext(); 
+
+    //for field order Item.
+    //quantity,unit price,total individual price,
+    const handleOrderItems = () => {
+        const quantityAndUnitPrice = cartItems.reduce((acc, item) => {
+            acc[item.id] = {
+                unit_price: item.price,
+                quantity: quantities[item.id] || 1, // Handle undefined quantities
+            };
+            return acc;
+        }, {});
+        const orderItemsState = {
+            user: user.user_id,
+            total_price: totalPrice,
+            orderItemsInfo: quantityAndUnitPrice
+        };
+
+        setOrderItems(orderItemsState);
+    };
+
+    //order
+    //userId,order items
+   
 
     const handleRemoveFromCart = (productId) => {
         dispatch(removeCartItem(productId));
@@ -34,18 +60,23 @@ const Cart = () => {
             acc[item.id] = 1; // Default quantity to 1 for each item
             return acc;
         }, {});
+        
         setQuantities(initialQuantities);
     }, [cartItems]);
 
     const handleQuantityChange = (productId, newQuantity) => {
+       
         const updatedQuantities = {
+            
             ...quantities,
             [productId]: newQuantity
         };
-        console.log("asasasasas: ",updatedQuantities)
+       // console.log("asasasasas: ",updatedQuantities)
         setQuantities(updatedQuantities);
+       
         
     };
+   
 
     useEffect(() => {
         dispatch(fetchCartItems());
@@ -56,7 +87,7 @@ const Cart = () => {
     if (isLoading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
-                <CircularProgress color="success" />
+                <CircularProgress color="success" /> 
             </Box>
         );
     }
@@ -164,6 +195,7 @@ const Cart = () => {
                             <Typography sx={{ fontSize: '1em' }}>{totalPrice} ₺</Typography>
                         </Stack>
                         <Button
+                            onClick={() => handleOrderItems()}
                             variant="contained"
                             sx={{
                                 backgroundColor: 'black',
@@ -194,6 +226,7 @@ const Cart = () => {
                         <Typography sx={{ fontSize: '1em' }}>{totalPrice} ₺</Typography>
                     </Stack>
                     <Button
+                        onClick={() => handleOrderItems()}
                         variant="contained"
                         sx={{
                             backgroundColor: 'black',
