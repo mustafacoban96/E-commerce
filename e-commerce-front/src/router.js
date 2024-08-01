@@ -10,6 +10,7 @@ import Register from "./views/Register/Register";
 import ProductList from "./features/products/ProductList";
 import ProductDetail from "./features/products/ProductDetail";
 import Cart from "./features/cart/Cart";
+import Order from "./features/order/Order";
 
 
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 element:<Cart/>,
                 path:"/cart"
+            },
+            {
+                element:<Order/>,
+                path:"/order-page"
             }
         ]
     },
