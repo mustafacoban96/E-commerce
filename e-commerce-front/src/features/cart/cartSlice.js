@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosConfig from "../../service/api/newApi";
 
 const initialState = {
@@ -22,7 +22,7 @@ export const addCartItem = createAsyncThunk('cart/addCartItem', async (itemId) =
 });
 
 export const removeCartItem = createAsyncThunk('cart/removeCartItem', async (itemId) => {
-    const response = await axiosConfig.post('/cart/remove-from-cart', {
+    await axiosConfig.post('/cart/remove-from-cart', {
         cart_item_id: itemId
     });
     return itemId; // Returning the itemId to be used in the reducer
@@ -33,15 +33,10 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         incrementTotal: (state,action) =>{
-            console.log('lala',action)
             state.total_price += action.payload;
-            
         },
         decrementTotal: (state,action) =>{
-            console.log('lale',action)
-            
             state.total_price -= action.payload
-            
         }
     },
     extraReducers(builder) {
