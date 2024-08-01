@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartItems, getCartItems, getError, getIsLoading, getTotalPrice, removeCartItem,incrementTotal,decrementTotal } from './cartSlice';
 import { useAuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -26,24 +27,15 @@ const Cart = () => {
     const totalPrice = useSelector(getTotalPrice);
     const [orderItems,setOrderItems] = useState({});
     const {user} = useAuthContext(); 
+    const navigate = useNavigate();
 
     //for field order Item.
     //quantity,unit price,total individual price,
     const handleOrderItems = () => {
-        const quantityAndUnitPrice = cartItems.reduce((acc, item) => {
-            acc[item.id] = {
-                unit_price: item.price,
-                quantity: quantities[item.id] || 1, // Handle undefined quantities
-            };
-            return acc;
-        }, {});
-        const orderItemsState = {
-            user: user.user_id,
-            total_price: totalPrice,
-            orderItemsInfo: quantityAndUnitPrice
-        };
-
-        setOrderItems(orderItemsState);
+        console.log(orderItems)
+        setTimeout(() =>{
+            navigate("/order-page",{state: orderItems})
+        },2500)
     };
 
     //order
@@ -63,7 +55,25 @@ const Cart = () => {
         
         setQuantities(initialQuantities);
     }, [cartItems]);
+    useEffect(() =>{
+        const quantityAndUnitPrice = cartItems.reduce((acc, item) => {
+            acc.push({
+                product_id: item.id,
+                product_name: item.name,
+                unit_price: item.price,
+                quantity: quantities[item.id] || 1, // Handle undefined quantities
+            });
+            return acc;
+        }, []);
+        const orderItemsState = {
+            user: user.user_id,
+            total_price: totalPrice,
+            orderItemsInfo: quantityAndUnitPrice
+        };
 
+        setOrderItems(orderItemsState);
+    },[user,totalPrice,quantities,cartItems])
+   
     const handleQuantityChange = (productId, newQuantity) => {
        
         const updatedQuantities = {
@@ -73,7 +83,7 @@ const Cart = () => {
         };
        // console.log("asasasasas: ",updatedQuantities)
         setQuantities(updatedQuantities);
-       
+        
         
     };
    
