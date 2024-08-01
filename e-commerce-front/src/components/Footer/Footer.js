@@ -31,7 +31,7 @@ const Footer = () => {
     sx={{
         width:'100%',
         padding:'15px',
-        mt:'10px',
+        mt:'50px',
         backgroundColor:`${myFooterBackgroundColor(mode)}`
 
     }}
