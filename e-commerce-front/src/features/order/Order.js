@@ -21,6 +21,7 @@ const style = {
 const Order = () => {
     const location = useLocation();
     const data = location.state;
+    console.log('data:::',data)
     const [checked, setChecked] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -28,7 +29,7 @@ const Order = () => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
       };
-    console.log(location)
+    
     if(!data){
         return (
             <div>hataaaaa</div>
@@ -50,7 +51,7 @@ const Order = () => {
                                 {item.product_name}
                             </Typography>
                             <Typography gutterBottom variant="h6" component="div">
-                                {item.quantity*item.unit_price} ₺
+                                {item.total_price_per_product} ₺
                             </Typography>
                             </Stack>
                             
@@ -104,7 +105,7 @@ const Order = () => {
                         checked={checked}
                         onChange={handleChange}
                         inputProps={{ 'aria-label': 'controlled' }}
-                        
+                        color='success'
                         />
                         
                         <Typography onClick={handleOpen} sx={{ fontSize: '1em',textDecoration:'underline', cursor:'pointer'}}> Read the conditions</Typography>
@@ -114,7 +115,7 @@ const Order = () => {
                             variant="contained"
                             disabled={!checked}
                             sx={{
-                                backgroundColor: 'black',
+                                backgroundColor: '#00a156',
                                 '&:hover': {
                                     backgroundColor: '#00a152', // Success color on hover
                                 },

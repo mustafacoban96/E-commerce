@@ -61,6 +61,7 @@ const Cart = () => {
                 product_id: item.id,
                 product_name: item.name,
                 unit_price: item.price,
+                total_price_per_product:(quantities[item.id] || 1) * item.price,
                 quantity: quantities[item.id] || 1, // Handle undefined quantities
             });
             return acc;
