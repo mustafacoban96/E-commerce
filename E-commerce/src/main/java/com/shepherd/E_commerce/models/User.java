@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,11 +32,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
@@ -43,7 +39,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name = "users")
 @Builder
-@ToString(exclude = {"refreshToken", "cart"})
+@ToString(exclude = {"refreshToken", "cart", "orders"})
+@EqualsAndHashCode(of = {"id"})  // Only use the ID for equals and hashCode
 public class User implements UserDetails,Serializable{
 	
 	@Id
