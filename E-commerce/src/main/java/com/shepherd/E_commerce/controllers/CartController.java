@@ -9,7 +9,6 @@ import com.shepherd.E_commerce.service.securityService.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.shepherd.E_commerce.dto.requests.AddItemToCartRequest;
 import com.shepherd.E_commerce.service.CartService;
 
 @RestController
