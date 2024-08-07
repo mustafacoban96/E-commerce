@@ -5,6 +5,7 @@ import com.shepherd.E_commerce.dto.requests.OrderRequest;
 import com.shepherd.E_commerce.models.OrderItems;
 import com.shepherd.E_commerce.models.Orders;
 import com.shepherd.E_commerce.repository.OrdersRepository;
+import com.shepherd.E_commerce.service.CartService;
 import com.shepherd.E_commerce.service.OrderItemsService;
 import com.shepherd.E_commerce.service.UserService;
 import org.hibernate.query.Order;
@@ -24,15 +25,17 @@ public class OrderServiceImpl implements OrderService{
 
     private final UserService userService;
     private final OrderItemsService orderItemsService;
-
+    private final CartService cartService;
     private final OrdersRepository ordersRepository;
 
     public OrderServiceImpl(UserService userService,
                             @Lazy OrderItemsService orderItemsService,
-                            OrdersRepository ordersRepository) {
+                            OrdersRepository ordersRepository,
+                            CartService cartService) {
         this.userService = userService;
         this.orderItemsService = orderItemsService;
         this.ordersRepository = ordersRepository;
+        this.cartService = cartService;
     }
 
     //create order
@@ -52,6 +55,7 @@ public class OrderServiceImpl implements OrderService{
             items.add(orderItemsService.createOrderItem(item,orders.getId()));
         }
         orders.setOrderItems(items);
+        cartService.removeAllItemsFromCart(request.getUser_id());
         return ordersRepository.save(orders);
     }
 

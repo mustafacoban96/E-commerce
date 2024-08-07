@@ -1,6 +1,8 @@
 package com.shepherd.E_commerce.service.Impl;
 
 import com.shepherd.E_commerce.dto.requests.OrderItemRequest;
+import com.shepherd.E_commerce.exceptions.ProductStockException;
+import com.shepherd.E_commerce.models.Products;
 import com.shepherd.E_commerce.service.OrderService;
 import com.shepherd.E_commerce.service.ProductService;
 import org.springframework.stereotype.Service;
@@ -30,14 +32,21 @@ public class OrderItemsServiceImpl implements OrderItemsService{
     @Override
     public OrderItems createOrderItem(OrderItemRequest request, UUID order_id) {
 
+        Products product = productService.findProductById(request.getProduct_id());
+
+        if(request.getQuantity() > product.getStock() ){
+            throw new ProductStockException("Product sold out");
+        }
+
+
         OrderItems item = OrderItems.builder()
                 .name(request.getProduct_name())
                 .quantity(request.getQuantity())
                 .unit_price(request.getUnit_price())
                 .total_price(request.getTotal_price_per_product())
-                .products(productService.findProductById(request.getProduct_id()))
+                .products(product)
                 .build();
-
+        product.setStock(product.getStock() - request.getQuantity());
         item.setOrder(orderService.getOrderById(order_id));
         return orderItemsRepository.save(item);
     }
