@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartItems, getCartItems, getError, getIsLoading, getTotalPrice, removeCartItem,incrementTotal,decrementTotal } from './cartSlice';
 import { useAuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -36,6 +37,10 @@ const Cart = () => {
         setTimeout(() =>{
             navigate("/order-page",{state: orderItems})
         },2500)
+        toast.info("You are directed order page",{
+            autoClose: 2300,
+            position: 'top-right',
+        })
     };
 
     //order
@@ -67,9 +72,9 @@ const Cart = () => {
             return acc;
         }, []);
         const orderItemsState = {
-            user: user.user_id,
+            user_id: user.user_id,
             total_price: totalPrice,
-            orderItemsInfo: quantityAndUnitPrice
+            order_items_list: quantityAndUnitPrice
         };
 
         setOrderItems(orderItemsState);
@@ -97,7 +102,7 @@ const Cart = () => {
 
     if (isLoading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <Box key={'loading'} sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
                 <CircularProgress color="success" /> 
             </Box>
         );
@@ -105,14 +110,15 @@ const Cart = () => {
 
     if (error) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <Box key={'error'} sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
                 <Alert severity="error">The cart is not viewed properly...Please refresh the page</Alert>
             </Box>
         );
     }
 
     return (
-       <Box sx={{ display: 'flex', justifyContent: 'space-around', flexDirection: { md: 'row', xs: 'column' } }}>
+        <>
+       <Box key={'fulfilled'} sx={{ display: 'flex', justifyContent: 'space-around', flexDirection: { md: 'row', xs: 'column' } }}>
           
             {/* cart item area */}
             <Box sx={{ width: { lg: '65%', md: '50%', xs: '90%' }, marginX: '6%' }}>
@@ -207,6 +213,7 @@ const Cart = () => {
                         </Stack>
                         <Button
                             onClick={() => handleOrderItems()}
+                            disabled={cartItems.length === 0 ? true : false}
                             variant="contained"
                             sx={{
                                 backgroundColor: 'black',
@@ -238,6 +245,7 @@ const Cart = () => {
                     </Stack>
                     <Button
                         onClick={() => handleOrderItems()}
+                        disabled={cartItems.length === 0 ? true : false}
                         variant="contained"
                         sx={{
                             backgroundColor: 'black',
@@ -251,6 +259,9 @@ const Cart = () => {
                 </Stack>
             </Box>
         </Box>
+        <ToastContainer/>
+        </>
+        
     );
 };
 

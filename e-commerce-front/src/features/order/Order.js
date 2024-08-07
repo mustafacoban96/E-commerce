@@ -1,4 +1,4 @@
-import { Box, Button, CardMedia, Checkbox, Modal, Stack } from '@mui/material';
+import { Alert, Box, Button, CardMedia, Checkbox, CircularProgress, Modal, Stack } from '@mui/material';
 import React, { useState } from 'react'
 import { useLocation } from 'react-router';
 import Card from '@mui/material/Card';
@@ -6,6 +6,9 @@ import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder, getError, getIsLoading } from './orderSlice';
+import { toast, ToastContainer } from 'react-toastify';
 
 const style = {
     position: 'absolute',
@@ -21,20 +24,58 @@ const style = {
 const Order = () => {
     const location = useLocation();
     const data = location.state;
-    console.log('data:::',data)
     const [checked, setChecked] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleChange = (event) => {
         setChecked(event.target.checked);
-      };
+    };
+      const error = useSelector(getError)
+      const isLoading = useSelector(getIsLoading)
+      const dispatch= useDispatch();
+
+     const handleOrder = () =>{
+        setTimeout(() =>{
+            dispatch(createOrder({
+                user_id:data.user_id,
+                total_price:data.total_price,
+                order_items_list:data.order_items_list}))
+        },2300)
+
+        toast.success("Order was created successfully",{
+            autoClose:2000,
+            position:'top-right'
+        })
+      }
     
     if(!data){
         return (
-            <div>hataaaaa</div>
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <Alert severity="error">The order page is not viewed properly...Please refresh the page</Alert>
+        </Box>
         )
     }
+   
+
+    if (isLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+                <CircularProgress color="success" /> 
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+                <Alert severity="error">The order page is not viewed properly...Please refresh the page</Alert>
+            </Box>
+        );
+    }
+
+
+    
   return (
     <>
      <Box sx={{p:2,position:'relative'}}>
@@ -42,8 +83,8 @@ const Order = () => {
         }} spacing={3}>
             <Stack spacing={1} sx={{width:'100%'}}>
                 {
-                    data.orderItemsInfo.map((item) =>(
-                        <Card variant="outlined" sx={{width:'63%'}}>
+                    data.order_items_list.map((item,index) =>(
+                        <Card key={index} variant="outlined" sx={{width:'63%'}}>
                         <Box sx={{ p: 2 ,backgroundColor:'#fafafa'}}>
                             <Stack direction="row" justifyContent="space-between" alignItems="center"
                             >
@@ -121,6 +162,7 @@ const Order = () => {
                                 },
                                 width:'70%'
                             }}
+                            onClick={() => handleOrder()}
                         >
                             Checkout
                         </Button>
@@ -148,6 +190,7 @@ const Order = () => {
         </Box>
       </Modal>
      </Box>
+     <ToastContainer/>
     </>
   )
 }
