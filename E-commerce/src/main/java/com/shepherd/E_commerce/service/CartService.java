@@ -19,5 +19,6 @@ public interface CartService {
 	public List<IndividualCartItemResponse> getAllCartItemByUserId(String token);
 
 	public void removeItemFromCart(CartItem request, String token);
+	void removeAllItemsFromCart(UUID userId);
 
 }

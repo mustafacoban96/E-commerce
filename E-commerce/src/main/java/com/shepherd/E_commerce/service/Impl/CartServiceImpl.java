@@ -66,6 +66,13 @@ public class CartServiceImpl implements CartService{
 		cart.getCartItems().remove(product);
 		cartRepository.save(cart);
 	}
+	@Override
+	public void removeAllItemsFromCart(UUID user_id) {
+		Cart cart = (Cart) cartRepository.findByUserId(user_id)
+				.orElseThrow(() -> new CartNotFoundException("Cart not found"));
+		cart.getCartItems().clear();
+		cartRepository.save(cart);
+	}
 
 	@Override
 	public Cart newCart(User user) {
