@@ -16,12 +16,15 @@ import HomeIcon from '@mui/icons-material/Home';
 import CategoryIcon from '@mui/icons-material/Category';
 import useAuthService from '../../service/auth-service';
 import { useAuthContext } from '../../context/AuthContext';
+import { getCartItems } from '../../features/cart/cartSlice';
+import { useSelector } from 'react-redux';
 
 
 const Navbar = () => {
   const theme = useTheme();
   const [mode] = useState(theme.palette.mode);
-  console.log('navbar');
+  
+  const cartItems = useSelector(getCartItems);
 
 
 
@@ -140,7 +143,7 @@ const Navbar = () => {
         >
          <Link to='/cart'>
           <IconButton>
-            <Badge badgeContent={2} color='error'>
+            <Badge badgeContent={cartItems.length} color='error'>
               <ShoppingCartOutlinedIcon style={{color:`${myMode(mode)}`}}/>
             </Badge>
             </IconButton>
