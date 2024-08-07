@@ -70,6 +70,7 @@ export const getTotalElements =(state) => state.products.totalElements;
 export const getTotalPages = (state) => state.products.totalPages;
 export const getLast = (state) => state.products.last;
 export const selectProductById = (state,productId) =>{
+    console.log('aawe',state.products.products.find(product => product.id === productId))
     return state.products.products.find(product => product.id === productId);
 }
 export default productSlice.reducer;

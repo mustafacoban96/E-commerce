@@ -132,7 +132,8 @@ const productPhoto = [
                         
                         sx={{display:'flex',justifyContent:'space-around'}}>
                             <Button color='error' variant='contained' sx={{width:'80%'}}
-                            onClick={() => dispatch(addCartItem(productId))}>ADD TO CART</Button>
+                            disabled={product.stock !== 0 ? false : true}
+                            onClick={() => dispatch(addCartItem(productId))}>{product.stock !== 0 ? 'ADD TO CART' : 'SOLD OUT'}</Button>
                             <Checkbox 
                             {...label} 
                             icon={<FavoriteBorder />} 
@@ -205,7 +206,9 @@ const productPhoto = [
         </Stack>
 
         <Stack direction={'row'} sx={{ display: 'flex', justifyContent: 'space-around' ,p:2}}>
-            <Button color='error' variant='contained' sx={{ width: '80%' }} onClick={() => dispatch(addCartItem(productId))}>ADD TO CART</Button>
+            <Button color='error' variant='contained' sx={{ width: '80%' }}
+            disabled={product.stock !== 0 ? false : true} 
+            onClick={() => dispatch(addCartItem(productId))}>{product.stock !== 0 ? 'ADD TO CART' : 'SOLD OUT'}</Button>
             <Checkbox
                 {...label}
                 icon={<FavoriteBorder />}
