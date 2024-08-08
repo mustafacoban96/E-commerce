@@ -1,5 +1,5 @@
 import { Alert, Box, Button, CardMedia, Checkbox, CircularProgress, Modal, Stack } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router';
 import Card from '@mui/material/Card';
 
@@ -26,6 +26,7 @@ const Order = () => {
     const data = location.state;
     const [checked, setChecked] = useState(false);
     const [open, setOpen] = useState(false);
+    const [orderInitiated, setOrderInitiated] = useState(false); //i don't want toast works when page is refreshed
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleChange = (event) => {
@@ -35,19 +36,32 @@ const Order = () => {
       const isLoading = useSelector(getIsLoading)
       const dispatch= useDispatch();
 
-     const handleOrder = () =>{
-        setTimeout(() =>{
-            dispatch(createOrder({
-                user_id:data.user_id,
-                total_price:data.total_price,
-                order_items_list:data.order_items_list}))
-        },2300)
+      
 
-        toast.success("Order was created successfully",{
-            autoClose:2000,
-            position:'top-right'
-        })
-      }
+      useEffect(() => {
+        if (orderInitiated) {
+            if (error) {
+                toast.error("Order was not performed.. maybe there is a product stock problem", {
+                    autoClose: 2500,
+                    position: 'top-right'
+                });
+            } else if (!isLoading) {
+                toast.success("Order was created successfully", {
+                    autoClose: 2000,
+                    position: 'top-right'
+                });
+            }
+        }
+    }, [error, isLoading, orderInitiated]);
+
+    const handleOrder = () => {
+        setOrderInitiated(true);
+        dispatch(createOrder({
+            user_id: data.user_id,
+            total_price: data.total_price,
+            order_items_list: data.order_items_list
+        }));
+    };
     
     if(!data){
         return (
@@ -66,13 +80,7 @@ const Order = () => {
         );
     }
 
-    if (error) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
-                <Alert severity="error">The order page is not viewed properly...Please refresh the page</Alert>
-            </Box>
-        );
-    }
+    
 
 
     
