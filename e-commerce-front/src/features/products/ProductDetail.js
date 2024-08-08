@@ -109,24 +109,7 @@ const productPhoto = [
                         </Typography>
                         
                     </Stack>
-                        <Stack direction={'row'} sx={{display:'flex',justifyContent:'center'}}>
-
-                            <IconButton  onClick={() => setQuantity(prev => Math.max(prev - 1, 1))} size="small" sx={{color:'red'}}>
-                                <RemoveIcon fontSize="inherit" />
-                            </IconButton>
-                            <TextField 
-                                size='small' 
-                                inputProps={{ style:{textAlign:'center'}}} 
-                                value={Number(quantity)}
-                                onChange={(e) => {
-                                    const value = Math.max(0, Math.min(Number(e.target.value), product.stock));
-                                    setQuantity(value);
-                                }}
-                            />
-                            <IconButton onClick={() => setQuantity(prev => Math.min(prev + 1, product.stock))} size="small" sx={{color:'red'}}>
-                                <AddIcon fontSize="inherit" />
-                            </IconButton>
-                        </Stack>
+                       
                         <Stack 
                         direction={'row'} 
                         
