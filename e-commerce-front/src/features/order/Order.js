@@ -1,13 +1,13 @@
 import { Alert, Box, Button, CardMedia, Checkbox, CircularProgress, Modal, Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import Card from '@mui/material/Card';
 
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder, getError, getIsLoading } from './orderSlice';
+import { createOrder, getError, getIsLoading, getIsSuccessOrder,resetOrderSuccess} from './orderSlice';
 import { toast, ToastContainer } from 'react-toastify';
 
 const style = {
@@ -17,13 +17,13 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    
     boxShadow: 24,
     p: 4,
   };
 const Order = () => {
     const location = useLocation();
     const data = location.state;
+    console.log('11:::',location)
     const [checked, setChecked] = useState(false);
     const [open, setOpen] = useState(false);
     const [orderInitiated, setOrderInitiated] = useState(false); //i don't want toast works when page is refreshed
@@ -35,9 +35,11 @@ const Order = () => {
       const error = useSelector(getError)
       const isLoading = useSelector(getIsLoading)
       const dispatch= useDispatch();
-
+      const navigate = useNavigate();
+      const isSuccess = useSelector(getIsSuccessOrder);
       
 
+      
       useEffect(() => {
         if (orderInitiated) {
             if (error) {
@@ -50,9 +52,13 @@ const Order = () => {
                     autoClose: 2000,
                     position: 'top-right'
                 });
+                setTimeout(() =>{
+                    navigate("/order-end")
+                },2300)
+               
             }
         }
-    }, [error, isLoading, orderInitiated]);
+    }, [error, isLoading, orderInitiated,isSuccess]);
 
     const handleOrder = () => {
         setOrderInitiated(true);
@@ -64,9 +70,12 @@ const Order = () => {
     };
     
     if(!data){
+        setTimeout(() =>{
+            navigate('/products')
+        },3300)
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
-            <Alert severity="error">The order page is not viewed properly...Please refresh the page</Alert>
+        <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <Alert severity="info">There is any product in your cart, You are directing products page....</Alert>
         </Box>
         )
     }

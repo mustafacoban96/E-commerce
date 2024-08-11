@@ -8,7 +8,8 @@ const initialState = {
     total_price:0,
     user_id:null,
     isLoading: false,
-    error: null
+    error: null,
+    isSuccess:false, // for route order-end page after successful order
 }
 
 export const createOrder = createAsyncThunk('orders/createOrder', async(orderData) =>{
@@ -21,7 +22,11 @@ export const createOrder = createAsyncThunk('orders/createOrder', async(orderDat
 const orderSlice = createSlice({
     name:'orders',
     initialState,
-    reducers:{},
+    reducers:{
+        resetOrderSuccess: (state) => {
+            state.isSuccess = false;
+        }
+    },
     extraReducers(builder){
         // Add item to cart
         builder.addCase(createOrder.pending, (state) => {
@@ -33,6 +38,7 @@ const orderSlice = createSlice({
             state.order_items_list = action.meta.arg.order_items_list;
             state.total_price = action.meta.arg.total_price;
             state.user_id = action.meta.arg.user_id;
+            state.isSuccess = true; 
         })
         builder.addCase(createOrder.rejected, (state, action) => {
             state.isLoading = false;
@@ -43,6 +49,8 @@ const orderSlice = createSlice({
 
 export const getIsLoading = (state) => state.orders.isLoading;
 export const getError = (state) => state.orders.error;
+export const getIsSuccessOrder = (state) => state.orders.isSuccess;
+export const {resetOrderSuccess} = orderSlice.actions;
 
 export default orderSlice.reducer;
 
