@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectProductById, fetchProductById } from './productSlice'
 import { useParams } from 'react-router'
-import { Box, Button, Card, CardActionArea, CardMedia, Checkbox,Grid, IconButton, ImageList, ImageListItem, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardActionArea, CardMedia, Checkbox,Grid,ImageList, ImageListItem, Stack,Typography } from '@mui/material'
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import { pink } from '@mui/material/colors'
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import HomeSlide2 from '../../views/Home/HomeSlide2'
 import { addCartItem } from '../cart/cartSlice'
 
@@ -17,7 +15,7 @@ const ProductDetail = () => {
     const dispatch = useDispatch()
     const product = useSelector((state) => selectProductById(state, productId))
     const [loading, setLoading] = useState(true)
-    const [quantity, setQuantity] = useState(1);
+    
     const [productMain, setProductMain] = useState('https://lp2.hm.com/hmgoepprod?set=source[/22/9b/229b87236e1e7400a0cd0ba0da29955ba89b365f.jpg],origin[dam],category[],type[LOOKBOOK],res[z],hmver[1]&call=url[file:/product/main]')
     
 const productPhoto = [
