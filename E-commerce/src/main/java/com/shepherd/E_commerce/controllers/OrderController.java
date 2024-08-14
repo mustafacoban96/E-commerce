@@ -1,6 +1,8 @@
 package com.shepherd.E_commerce.controllers;
 
 import com.shepherd.E_commerce.dto.requests.OrderRequest;
+import com.shepherd.E_commerce.dto.response.CreateOrderResponse;
+import com.shepherd.E_commerce.models.Orders;
 import com.shepherd.E_commerce.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,9 @@ public class OrderController {
     }
 
     @PostMapping("/create-order")
-    public ResponseEntity<UUID> createOrder(@RequestBody OrderRequest request){
-        UUID order_id = orderService.createOrder(request).getId();
-        return new ResponseEntity<>(order_id, HttpStatus.OK);
+    public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody OrderRequest request){
+        CreateOrderResponse response = orderService.createOrder(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
