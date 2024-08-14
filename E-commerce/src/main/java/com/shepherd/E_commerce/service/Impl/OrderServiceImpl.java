@@ -2,6 +2,8 @@ package com.shepherd.E_commerce.service.Impl;
 
 import com.shepherd.E_commerce.dto.requests.OrderItemRequest;
 import com.shepherd.E_commerce.dto.requests.OrderRequest;
+import com.shepherd.E_commerce.dto.response.CreateOrderResponse;
+import com.shepherd.E_commerce.mappers.OrderMapper;
 import com.shepherd.E_commerce.models.OrderItems;
 import com.shepherd.E_commerce.models.Orders;
 import com.shepherd.E_commerce.repository.OrdersRepository;
@@ -27,21 +29,24 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemsService orderItemsService;
     private final CartService cartService;
     private final OrdersRepository ordersRepository;
+    private final OrderMapper orderMapper;
 
     public OrderServiceImpl(UserService userService,
                             @Lazy OrderItemsService orderItemsService,
                             OrdersRepository ordersRepository,
-                            CartService cartService) {
+                            CartService cartService,
+                            OrderMapper orderMapper) {
         this.userService = userService;
         this.orderItemsService = orderItemsService;
         this.ordersRepository = ordersRepository;
         this.cartService = cartService;
+        this.orderMapper = orderMapper;
     }
 
     //create order
     @Override
     @Transactional
-    public Orders createOrder(OrderRequest request) {
+    public CreateOrderResponse createOrder(OrderRequest request) {
 
         Set<OrderItems> items = new HashSet<>();
         Orders orders = Orders.builder()
@@ -56,7 +61,12 @@ public class OrderServiceImpl implements OrderService{
         }
         orders.setOrderItems(items);
         cartService.removeAllItemsFromCart(request.getUser_id());
-        return ordersRepository.save(orders);
+        ordersRepository.save(orders);
+        ordersRepository.flush(); // Force save to the database
+
+        //System.out.println("qqwe" + orders.getCreated_at().getTime());
+
+        return orderMapper.toCreateOrderResponse(orders) ;
     }
 
     @Override
