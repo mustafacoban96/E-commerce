@@ -23,7 +23,7 @@ const style = {
 const Order = () => {
     const location = useLocation();
     const data = location.state;
-    console.log('11:::',location)
+    //console.log('11:::',location)
     const [checked, setChecked] = useState(false);
     const [open, setOpen] = useState(false);
     const [orderInitiated, setOrderInitiated] = useState(false); //i don't want toast works when page is refreshed

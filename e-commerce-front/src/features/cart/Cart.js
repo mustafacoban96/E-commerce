@@ -33,7 +33,6 @@ const Cart = () => {
     //for field order Item.
     //quantity,unit price,total individual price,
     const handleOrderItems = () => {
-        console.log(orderItems)
         setTimeout(() =>{
             navigate("/order-page",{state: orderItems})
         },2500)

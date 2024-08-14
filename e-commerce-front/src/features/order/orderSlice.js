@@ -9,12 +9,14 @@ const initialState = {
     user_id:null,
     isLoading: false,
     error: null,
-    isSuccess:false, // for route order-end page after successful order
+    is_success_order:false, // for route order-end page after successful order
+    order_id:null,
+    order_total:0,
+    delivery_by:null
 }
 
 export const createOrder = createAsyncThunk('orders/createOrder', async(orderData) =>{
     const response = await axiosConfig.post("/order/create-order",orderData)
-   
     return response.data
 })
 
@@ -24,7 +26,7 @@ const orderSlice = createSlice({
     initialState,
     reducers:{
         resetOrderSuccess: (state) => {
-            state.isSuccess = false;
+            state.is_success_order = false;
         }
     },
     extraReducers(builder){
@@ -35,10 +37,11 @@ const orderSlice = createSlice({
         builder.addCase(createOrder.fulfilled, (state, action) => {
           
             state.isLoading = false;
-            state.order_items_list = action.meta.arg.order_items_list;
-            state.total_price = action.meta.arg.total_price;
-            state.user_id = action.meta.arg.user_id;
-            state.isSuccess = true; 
+            state.order_id = action.payload.order_id;
+            state.delivery_by = action.payload.delivery_by
+            state.order_total = action.payload.order_total
+            state.is_success_order = action.payload.is_success_order;
+
         })
         builder.addCase(createOrder.rejected, (state, action) => {
             state.isLoading = false;
@@ -49,24 +52,11 @@ const orderSlice = createSlice({
 
 export const getIsLoading = (state) => state.orders.isLoading;
 export const getError = (state) => state.orders.error;
-export const getIsSuccessOrder = (state) => state.orders.isSuccess;
+export const getIsSuccessOrder = (state) => state.orders.is_success_order;
+export const getOrderId = (state) => state.orders.order_id;
+export const getDeliveryBy = (state) => state.orders.delivery_by;
+export const getOrderTotal = (state) => state.orders.order_total;
 export const {resetOrderSuccess} = orderSlice.actions;
 
 export default orderSlice.reducer;
 
-
-
-
-
-
-
-
-/*
-
-"{
-"order_items_list":[
-    {"product_id":"95116eb9-89a1-46b4-b40c-604302d63820","product_name":"Lenovo ideapad1","unit_price":11000,"total_price_per_product":11000,"quantity":1},
-    {"product_id":"322ecf6b-6b1b-4747-943c-0f97980d9df8","product_name":"Apple","unit_price":11000,"total_price_per_product":11000,"quantity":1}
-    ],
-    "total_price":{"requestId":"YuzhcCTxwKVru8WTKgWpT","signal":{}}}"
-*/ 
