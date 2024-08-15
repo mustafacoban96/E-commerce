@@ -3,6 +3,8 @@ package com.shepherd.E_commerce.service.Impl;
 import com.shepherd.E_commerce.dto.requests.OrderItemRequest;
 import com.shepherd.E_commerce.dto.requests.OrderRequest;
 import com.shepherd.E_commerce.dto.response.CreateOrderResponse;
+import com.shepherd.E_commerce.dto.response.OrderResponse;
+import com.shepherd.E_commerce.exceptions.NoOrdersFoundException;
 import com.shepherd.E_commerce.mappers.OrderMapper;
 import com.shepherd.E_commerce.models.OrderItems;
 import com.shepherd.E_commerce.models.Orders;
@@ -10,7 +12,6 @@ import com.shepherd.E_commerce.repository.OrdersRepository;
 import com.shepherd.E_commerce.service.CartService;
 import com.shepherd.E_commerce.service.OrderItemsService;
 import com.shepherd.E_commerce.service.UserService;
-import org.hibernate.query.Order;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -72,6 +74,22 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Orders getOrderById(UUID order_id) {
         return ordersRepository.getReferenceById(order_id);
+    }
+
+    @Override
+    @Transactional
+    public List<OrderResponse> getAllOrderByUserId(UUID user_id) {
+        List<Orders> listOrder = ordersRepository.findByUser_Id(user_id);
+
+        if (listOrder.isEmpty()) {
+            throw new NoOrdersFoundException("No orders found for user");
+        }
+
+        return listOrder.stream()
+                .map(order -> orderMapper.toOrderResponse(order))
+                .collect(Collectors.toList());
+
+
     }
     //////////////////////////////////////////////////////////create order
 }
