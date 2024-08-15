@@ -1,7 +1,9 @@
 package com.shepherd.E_commerce.controllers;
 
+import com.shepherd.E_commerce.dto.requests.OrderListRequest;
 import com.shepherd.E_commerce.dto.requests.OrderRequest;
 import com.shepherd.E_commerce.dto.response.CreateOrderResponse;
+import com.shepherd.E_commerce.dto.response.OrderResponse;
 import com.shepherd.E_commerce.models.Orders;
 import com.shepherd.E_commerce.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,6 +30,12 @@ public class OrderController {
     public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody OrderRequest request){
         CreateOrderResponse response = orderService.createOrder(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/list-order")
+    public ResponseEntity<List<OrderResponse>> listOrder(@RequestBody OrderListRequest request){
+        List<OrderResponse> orderResponse = orderService.getAllOrderByUserId(request.getUser_id());
+        return new ResponseEntity<>(orderResponse,HttpStatus.OK);
     }
 
 }
