@@ -114,6 +114,15 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.NOT_FOUND);
 	}
-	
+
+	//OrderException
+	@ExceptionHandler(NoOrdersFoundException.class)
+	public ResponseEntity<ErrorObject> handleNoOrdersFoundException(NoOrdersFoundException ex){
+		errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorObject.setMessage(ex.getMessage());
+		errorObject.setTimestamp(new Date());
+
+		return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.NOT_FOUND);
+	}
 
 }
