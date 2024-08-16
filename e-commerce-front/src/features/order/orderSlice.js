@@ -10,13 +10,20 @@ const initialState = {
     isLoading: false,
     error: null,
     is_success_order:false, // for route order-end page after successful order
+    //these field for after create  order 
     order_id:null,
     order_total:0,
-    delivery_by:null
+    delivery_by:null,
+    order_list:[]
 }
 
 export const createOrder = createAsyncThunk('orders/createOrder', async(orderData) =>{
     const response = await axiosConfig.post("/order/create-order",orderData)
+    return response.data
+})
+
+export const fetchOrders = createAsyncThunk('orders/fetchOrder' , async(user_id) =>{
+    const response = await axiosConfig.post('/order/list-order',user_id)
     return response.data
 })
 
@@ -47,6 +54,21 @@ const orderSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message;
         });
+        //fetch order
+        builder.addCase(fetchOrders.pending, (state) => {
+            state.isLoading = true;
+        })
+        builder.addCase(fetchOrders.fulfilled, (state, action) => {
+          
+            state.isLoading = false;
+            state.order_list = action.payload
+
+        })
+        builder.addCase(fetchOrders.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        });
+
     }
 })
 
@@ -56,6 +78,7 @@ export const getIsSuccessOrder = (state) => state.orders.is_success_order;
 export const getOrderId = (state) => state.orders.order_id;
 export const getDeliveryBy = (state) => state.orders.delivery_by;
 export const getOrderTotal = (state) => state.orders.order_total;
+export const getOrderList = (state) => state.orders.order_list
 export const {resetOrderSuccess} = orderSlice.actions;
 
 export default orderSlice.reducer;
