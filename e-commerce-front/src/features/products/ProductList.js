@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts, getAllProducts, getError, getIsLoading, getLast, getPageSize, getTotalElements, selectProductById} from './productSlice'
 import ProdcutPageCard from '../../components/Card/ProdcutPageCard'
 import { Link } from 'react-router-dom'
-import { Alert, Box, Button, CircularProgress, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { Alert, Box, CircularProgress, Grid, IconButton, Stack } from '@mui/material'
 import ViewArrayOutlinedIcon from '@mui/icons-material/ViewArrayOutlined';
 import ViewColumnOutlinedIcon from '@mui/icons-material/ViewColumnOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';

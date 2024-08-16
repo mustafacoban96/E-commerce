@@ -10,6 +10,7 @@ const axiosConfig = axios.create({
   },
 });
 const refreshToken = async () => {
+ 
    
     try {
       const response = await axios.post(`${process.env.REACT_APP_AUTH_BASE_URL}/refreshtoken`, {
@@ -33,6 +34,7 @@ const refreshToken = async () => {
         localStorage.removeItem('ACCESS_TOKEN')
         localStorage.removeItem('REFRESH_TOKEN')
         localStorage.removeItem('USER')
+        window.location.reload();
       },4200)
     }
   };

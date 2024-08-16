@@ -88,9 +88,9 @@ const useAuthService = () => {
                 localStorage.removeItem('ACCESS_TOKEN');
                 localStorage.removeItem('REFRESH_TOKEN');
                 localStorage.removeItem('USER');
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2200);
                 
             }).catch((err) => {
                 //window.localStorage.href = '/login';
