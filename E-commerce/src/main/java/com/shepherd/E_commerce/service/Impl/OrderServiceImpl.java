@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     @Transactional
     public List<OrderResponse> getAllOrderByUserId(UUID user_id) {
-        List<Orders> listOrder = ordersRepository.findByUser_Id(user_id);
+        List<Orders> listOrder = ordersRepository.findByUserId(user_id);
 
         if (listOrder.isEmpty()) {
             throw new NoOrdersFoundException("No orders found for user");

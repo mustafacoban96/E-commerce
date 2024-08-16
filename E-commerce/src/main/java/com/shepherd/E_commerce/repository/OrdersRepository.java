@@ -9,6 +9,6 @@ import com.shepherd.E_commerce.models.Orders;
 
 public interface OrdersRepository extends	JpaRepository<Orders, UUID>{
 
-    List<Orders> findByUser_Id(UUID userId);
+    List<Orders> findByUserId(UUID userId);
 
 }
