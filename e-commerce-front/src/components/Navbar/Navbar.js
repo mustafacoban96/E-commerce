@@ -171,7 +171,10 @@ const Navbar = () => {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Orders</MenuItem>
+        <Link to={'order-list'} style={{textDecoration:'none',color:'black'}}>
+          <MenuItem onClick={handleClose}>Orders</MenuItem>
+        </Link>
+        
         <MenuItem onClick={logoutHandler}>Logout</MenuItem>
       </Menu>
     </Box>

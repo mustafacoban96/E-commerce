@@ -11,8 +11,9 @@ import ProductList from "./features/products/ProductList";
 import ProductDetail from "./features/products/ProductDetail";
 import Cart from "./features/cart/Cart";
 import Order from "./features/order/Order";
-import OrderSummary from "./features/order/OrderSummary";
 import EndOfOrder from "./features/order/EndOfOrder";
+import OrderList from "./features/order/OrderList";
+import OrderDetail from "./features/order/OrderDetail";
 
 
 
@@ -53,12 +54,17 @@ const router = createBrowserRouter([
                 path:"/order-page"
             },
             {
-                element:<OrderSummary/>,
-                path:"/order-summary"
+                element:<OrderList/>,
+                path:"/order-list"
             },
             {
                 element:<EndOfOrder/>,
                 path:"/order-end"
+            },
+            {   
+                element:<OrderDetail/>,
+                path:'/order/:orderId',
+               
             }
         ]
     },
