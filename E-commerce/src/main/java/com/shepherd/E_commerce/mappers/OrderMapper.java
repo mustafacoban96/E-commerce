@@ -39,7 +39,7 @@ public class OrderMapper {
     private String dateConveter(Timestamp date){
         Timestamp createdAt = date;
         ZonedDateTime dateTime = createdAt.toInstant().atZone(java.time.ZoneId.systemDefault());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH); // Use "E" for short day name and "yyyy" for full year
         String formattedDate = dateTime.format(formatter);
         return formattedDate;
     }
