@@ -4,22 +4,19 @@ package com.shepherd.E_commerce.repository;
 import com.shepherd.E_commerce.models.Products;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class ProductRepositoryTests {
 
     @Autowired
@@ -57,9 +54,25 @@ public class ProductRepositoryTests {
     @Test
     void testFindAllProduct(){
 
+        Products product = Products.builder()
+                .name("msi")
+                .description("laptop")
+                .price(Long.valueOf(1200))
+                .stock(12)
+                .build();
+        Products product2 = Products.builder()
+                .name("msi")
+                .description("machine")
+                .price(Long.valueOf(1200))
+                .stock(12)
+                .build();
+        productRepository.save(product);
+        productRepository.save(product2);
+
         List<Products> productsList = productRepository.findAll();
 
         Assertions.assertThat(productsList).hasSizeGreaterThan(0);
+
     }
 
     @Test
