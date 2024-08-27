@@ -36,7 +36,7 @@ public class Products {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	private String name;
 	private String description;
