@@ -2,22 +2,21 @@ package com.shepherd.E_commerce.repository;
 
 
 
-import com.shepherd.E_commerce.models.Products;
 import com.shepherd.E_commerce.models.Roles;
 import com.shepherd.E_commerce.models.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class UserRepositoryTests {
 
     @Autowired
@@ -100,6 +99,28 @@ public class UserRepositoryTests {
 
     @Test
     void testFindAllProduct(){
+        User user = User.builder()
+                .username("exampleUser")
+                .password("password")
+                .email("user@example.com")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .isEnabled(true)
+                .authorities(Set.of(Roles.ROLE_USER))  // Assign the ROLE_USER to this user
+                .build();
+        User user2 = User.builder()
+                .username("exampleUser2")
+                .password("password")
+                .email("user2@example.com")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .isEnabled(true)
+                .authorities(Set.of(Roles.ROLE_USER))  // Assign the ROLE_USER to this user
+                .build();
+        userRepository.save(user);
+        userRepository.save(user2);
 
         List<User> userList = userRepository.findAll();
 
