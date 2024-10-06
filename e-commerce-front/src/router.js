@@ -14,6 +14,7 @@ import Order from "./features/order/Order";
 import EndOfOrder from "./features/order/EndOfOrder";
 import OrderList from "./features/order/OrderList";
 import OrderDetail from "./features/order/OrderDetail";
+import ProfileSettingsPage from "./features/profileSettings/ProfileSettingsPage";
 
 
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
                 element:<OrderDetail/>,
                 path:'/order/:orderId',
                
+            },
+            {
+                element:<ProfileSettingsPage/>,
+                path:"/profile-information"
             }
         ]
     },
