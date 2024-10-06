@@ -27,6 +27,11 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrder' , async(user_id)
     return response.data
 })
 
+export const fetchOrderDetailById = createAsyncThunk('orders/fetchOrderDetailById' , async(order_id) =>{
+    const response = await axiosConfig.get(`/order-items/${order_id}`)
+    return response.data
+})
+
 
 const orderSlice = createSlice({
     name:'orders',
@@ -54,7 +59,7 @@ const orderSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message;
         });
-        //fetch order
+        //fetch orders
         builder.addCase(fetchOrders.pending, (state) => {
             state.isLoading = true;
         })
@@ -65,6 +70,20 @@ const orderSlice = createSlice({
 
         })
         builder.addCase(fetchOrders.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        });
+        // fetch order detail by Id
+        builder.addCase(fetchOrderDetailById.pending, (state) => {
+            state.isLoading = true;
+        })
+        builder.addCase(fetchOrderDetailById.fulfilled, (state, action) => {
+          
+            state.isLoading = false;
+            state.order_items_list = action.payload
+
+        })
+        builder.addCase(fetchOrderDetailById.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
         });
@@ -79,6 +98,7 @@ export const getOrderId = (state) => state.orders.order_id;
 export const getDeliveryBy = (state) => state.orders.delivery_by;
 export const getOrderTotal = (state) => state.orders.order_total;
 export const getOrderList = (state) => state.orders.order_list
+export const getOrderDetail = (state) => state.orders.order_items_list; 
 export const {resetOrderSuccess} = orderSlice.actions;
 
 export default orderSlice.reducer;
