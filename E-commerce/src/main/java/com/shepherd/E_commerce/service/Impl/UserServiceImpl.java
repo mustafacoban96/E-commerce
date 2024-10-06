@@ -112,18 +112,24 @@ public class UserServiceImpl implements UserService{
 			throw new UserNotFoundException("The user is not found, so you cannot perform update process");
 		}
 		User user = userRepository.getReferenceById(user_id);
-		
+
+		if (!user.getEmail().equals(updateUserRequest.email())) {
+			Optional<User> userWithSameEmail = userRepository.findByEmail(updateUserRequest.email());
+			if (userWithSameEmail.isPresent()) {
+				throw new EmailAlreadyExistsException("Email already exists: " + updateUserRequest.email());
+			}
+		}
+
 		user.setUsername(updateUserRequest.username());
 		user.setEmail(updateUserRequest.email());
 		
 		//?????????????? spagetti!!!!!!
-		if(updateUserRequest.old_password().equals(user.getPassword()) && updateUserRequest.new_password() != null && 
-				updateUserRequest.confirm_new_password() != null) {
+		if(updateUserRequest.new_password() != null && updateUserRequest.confirm_new_password() != null) {
 			if(!updateUserRequest.new_password().equals(updateUserRequest.confirm_new_password())) {
 				throw new PasswordMismatchException("Passwords do not match");
 			}
 			
-			user.setPassword(updateUserRequest.new_password());
+			user.setPassword(passwordEncoder.encode(updateUserRequest.new_password()));
 		}
 		
 		userRepository.save(user);

@@ -11,8 +11,6 @@ public record UpdateUserRequest(
 		@Email
 		@NotBlank(message="email is mandatory")
 		String email,
-		
-		String old_password,
 		String new_password,
 		String confirm_new_password
 		

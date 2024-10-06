@@ -238,7 +238,7 @@ public class UserServiceTests {
                 .build();
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "oldPassword", "newPassword", "newPassword");
+        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "newPassword", "newPassword");
 
         assertThrows(UserNotFoundException.class, () -> userService.updateUserById(userId, request));
 
@@ -257,7 +257,7 @@ public class UserServiceTests {
         when(userRepository.existsById(userId)).thenReturn(true);
         when(userRepository.getReferenceById(userId)).thenReturn(user);
 
-        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "oldPassword", "newPassword1", "newPassword2");
+        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "newPassword1", "newPassword2");
 
         assertThrows(PasswordMismatchException.class, () -> userService.updateUserById(userId, request));
 
@@ -279,7 +279,7 @@ public class UserServiceTests {
         when(userRepository.getReferenceById(userId)).thenReturn(user);
 
         // Creating the request with new username and email
-        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "oldPassword", null, null);
+        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", null, null);
 
         // Mocking the mapper response
         UserUpdateResponse response = new UserUpdateResponse(user.getId(), "new@example.com", "newUsername");
@@ -314,7 +314,7 @@ public class UserServiceTests {
         when(userRepository.existsById(userId)).thenReturn(true);
         when(userRepository.getReferenceById(userId)).thenReturn(user);
 
-        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "oldPassword", "newPassword", "newPassword");
+        UpdateUserRequest request = new UpdateUserRequest("newUsername", "new@example.com", "newPassword", "newPassword");
         UserUpdateResponse response = new UserUpdateResponse(user.getId(), "new@example.com", "newUsername");
         when(userMapper.UserEntityToUpdateResponse(any(User.class))).thenReturn(response);
 

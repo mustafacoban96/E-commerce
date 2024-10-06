@@ -28,7 +28,7 @@ public class UserMapper {
 			return null;
 		}
 		
-		return new UserUpdateResponse(user.getId(),user.getUsername(), user.getEmail());
+		return new UserUpdateResponse(user.getId(), user.getEmail(),user.getUsername());
 	}
 	
 	//individual user mapper
