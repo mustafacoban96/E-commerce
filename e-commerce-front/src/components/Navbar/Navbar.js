@@ -170,7 +170,10 @@ const Navbar = () => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Link to={"profile-information"} style={{textDecoration:'none',color:'black'}}>
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        </Link>
+        
         <Link to={'order-list'} style={{textDecoration:'none',color:'black'}}>
           <MenuItem onClick={handleClose}>Orders</MenuItem>
         </Link>

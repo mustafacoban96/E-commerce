@@ -1,9 +1,9 @@
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Divider, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOrders, getOrderList } from './orderSlice';
+import { fetchOrders, getError, getIsLoading, getOrderList } from './orderSlice';
 import { useAuthContext } from '../../context/AuthContext';
 import CustomDateRangePicker from '../../components/DatePicker/CustomDateRangePicker ';
 
@@ -12,6 +12,8 @@ const OrderList = () => {
   const dispatch = useDispatch();
   const orderList = useSelector(getOrderList);
   const { user } = useAuthContext();
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -40,6 +42,22 @@ const OrderList = () => {
     }
   }, [orderList, startDate, endDate]);
 
+  if (isLoading) {
+    return (
+        <Box key={'loading'} sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <CircularProgress color="success" /> 
+        </Box>
+    );
+}
+
+if (error) {
+    return (
+        <Box key={'error'} sx={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+            <Alert severity="error">The cart is not viewed properly...Please refresh the page</Alert>
+        </Box>
+    );
+}
+
   return (
     <Box sx={{ display: 'flex', p: 1, justifyContent: 'space-around' }}>
       <Box
@@ -48,7 +66,7 @@ const OrderList = () => {
           flexDirection: 'column',
           width: { xs: '30%', sm: '25%', md: '20%' },
           border: '1px solid grey',
-          height: '80vh',
+          height: '35vh',
         }}
       >
         <Stack>
@@ -58,7 +76,7 @@ const OrderList = () => {
             setStartDate={setStartDate}
             setEndDate={setEndDate}
           />
-          <Divider/>
+         
         </Stack>
       </Box>
 
