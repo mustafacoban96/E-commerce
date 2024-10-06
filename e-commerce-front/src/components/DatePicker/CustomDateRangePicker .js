@@ -3,7 +3,7 @@ import { Stack, TextField, Typography } from '@mui/material';
 
 const CustomDateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }) => {
   return (
-    <Stack spacing={2} sx={{m: 2, display: 'flex',flexDirection:'column' }}>
+    <Stack spacing={3} sx={{m: 2, display: 'flex',flexDirection:'column' }}>
         <Typography component={'h5'}>Date Picker</Typography>
       <TextField
         label="Start Date"
